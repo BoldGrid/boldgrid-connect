@@ -1,0 +1,12 @@
+config.php
+error_log
+*.swp
+logs*
+.buildpath
+.project
+.settings
+node_modules
+bower_components
+vendor/
+package-lock.json
+yarn-error.log
