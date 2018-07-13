@@ -28,7 +28,7 @@ return array(
 	),
 	'asset_server'          => 'https://api.boldgrid.com',
 	'plugin_name'           => 'boldgrid-connect',
-	'plugin_key_code'       => 'backup-connect',
+	'plugin_key_code'       => 'connect',
 	'main_file_path'        => BOLDGRID_CONNECT_PATH . '/boldgrid-connect.php',
 	'plugin_transient_name' => 'boldgrid_connect_version_data',
 );

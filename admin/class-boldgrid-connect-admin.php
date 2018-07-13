@@ -38,13 +38,7 @@ class Boldgrid_Connect_Admin {
 				'/admin/class-boldgrid-connect-admin-update.php';
 
 			$plugin_update = new Boldgrid_Connect_Admin_Update();
-
-			add_action(
-				'init', array(
-					$plugin_update,
-					'add_hooks',
-				)
-			);
+			$plugin_update->add_hooks();
 		}
 	}
 }

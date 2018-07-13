@@ -102,11 +102,11 @@ class Boldgrid_Connect {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-		$plugin_admin = new Boldgrid_Connect_Admin();
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'prepare_plugin_update' );
-
 		$config = new Boldgrid_Connect_Config();
 		$this->loader->add_action( 'init', $config, 'setup_configs' );
+
+		$plugin_admin = new Boldgrid_Connect_Admin();
+		$this->loader->add_action( 'init', $plugin_admin, 'prepare_plugin_update' );
 
 		$login = new Boldgrid_Connect_Login();
 		$this->loader->add_action( 'init', $login, 'setup' );
