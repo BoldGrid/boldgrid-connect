@@ -130,7 +130,7 @@ class Boldgrid_Connect_Login {
 	protected function login( $user, $redirect_url ) {
 		wp_clear_auth_cookie();
 		wp_set_current_user( $user->ID );
-		wp_set_auth_cookie( $user->ID );
+		wp_set_auth_cookie( $user->ID, true );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}

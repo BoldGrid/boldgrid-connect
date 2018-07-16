@@ -4,7 +4,7 @@
  *
  * @package    Boldgrid_Update
  * @copyright  BoldGrid.com
- * @version    1.3
+ * @version    1.0.0
  * @author     BoldGrid <support@boldgrid.com>
  * @link       https://www.boldgrid.com
  */

@@ -109,7 +109,7 @@ class Boldgrid_Connect {
 		$this->loader->add_action( 'init', $plugin_admin, 'prepare_plugin_update' );
 
 		$login = new Boldgrid_Connect_Login();
-		$this->loader->add_action( 'init', $login, 'setup' );
+		$login->setup();
 	}
 
 	/**
