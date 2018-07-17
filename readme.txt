@@ -4,7 +4,7 @@ Tags: boldgrid, connect, manage
 Requires at least: 4.4
 Tested up to: 4.9.7
 Requires PHP: 5.4
-Stable tag: 1.0.0-alpha.1
+Stable tag: 1.0.0-alpha.2
 
 Connects users and sites with BoldGrid Central.
 
