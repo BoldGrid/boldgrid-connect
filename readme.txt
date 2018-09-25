@@ -23,6 +23,9 @@ Connects users and sites with BoldGrid Central.
 
 == Changelog ==
 
+= 1.0.1 In progress =
+* Bug fix: Fixed conflict between tgmpa plugin installer and the BoldGrid custom update classes.
+
 = 1.0.0 =
 
 Release Date: August 13th, 2018

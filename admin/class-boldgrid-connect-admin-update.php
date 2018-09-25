@@ -46,7 +46,7 @@ class Boldgrid_Connect_Admin_Update {
 				array(
 					$this,
 					'custom_plugins_transient_update',
-				), 11
+				), 11, 3
 			);
 
 			add_filter(
@@ -62,7 +62,7 @@ class Boldgrid_Connect_Admin_Update {
 				array(
 					$this,
 					'custom_plugins_transient_update',
-				), 11
+				), 11, 2
 			);
 		}
 
@@ -99,9 +99,11 @@ class Boldgrid_Connect_Admin_Update {
 	 * @global $wp_version The WordPress version.
 	 *
 	 * @param  object $transient WordPress plugin update transient.
+	 * @param  string $action    Action name.
+	 * @param  array  $args      Optional arguments.
 	 * @return object $transient
 	 */
-	public function custom_plugins_transient_update( $transient ) {
+	public function custom_plugins_transient_update( $transient, $action, $args = array() ) {
 		$version_data = get_site_transient( $this->configs['plugin_transient_name'] );
 
 		if ( ! function_exists( 'get_plugin_data' ) ) {
@@ -157,6 +159,12 @@ class Boldgrid_Connect_Admin_Update {
 		}
 
 		global $pagenow;
+
+		$install_or_ajax = in_array(
+			$pagenow,
+			array( 'plugin-install.php', 'admin-ajax.php' ),
+			true
+		);
 
 		// Create a new object to be injected into transient.
 		if ( 'plugin-install.php' === $pagenow && isset( $_GET['plugin'] ) && // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
@@ -226,7 +234,7 @@ class Boldgrid_Connect_Admin_Update {
 			$transient->slug        = $this->configs['plugin_name'];
 			$transient->version     = $version_data->result->data->version;
 			$transient->new_version = $version_data->result->data->version;
-		} elseif ( ! in_array( $pagenow, array( 'plugin-install.php', 'admin-ajax.php' ), true ) ) {
+		} else if ( 'update_plugins' === $action && ! $install_or_ajax ) {
 			$obj              = new stdClass();
 			$obj->slug        = $this->configs['plugin_name'];
 			$obj->plugin      = $this->configs['plugin_name'] . '/' .
