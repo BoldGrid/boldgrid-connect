@@ -15,7 +15,7 @@
  * Plugin Name:       BoldGrid Connect
  * Plugin URI:        https://www.boldgrid.com
  * Description:       Toolkit for BoldGrid Connect functionality.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            BoldGrid
  * Author URI:        https://www.boldgrid.com
  * License:           GPL-2.0+
