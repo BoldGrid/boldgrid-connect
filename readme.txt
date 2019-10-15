@@ -4,7 +4,7 @@ Tags: boldgrid, connect, manage
 Requires at least: 4.4
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 Connects users and sites with BoldGrid Central.
 
@@ -23,13 +23,19 @@ Connects users and sites with BoldGrid Central.
 
 == Changelog ==
 
+= 1.0.2 =
+
+Release Date: October 15th, 2019
+
+* Update:  Updated dependency boldgrid/library to 2.10.4.
+
 = 1.0.1 =
 
 Release Date: September 11th, 2019
 
 * Bug fix: Fixed conflict between tgmpa plugin installer and the BoldGrid custom update classes.
 * Bug fix: Added composer hook for library build.
-* Update:  Updated dependencies
+* Update:  Updated dependencies.
 
 = 1.0.0 =
 
