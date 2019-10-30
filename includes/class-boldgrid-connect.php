@@ -12,6 +12,8 @@
  * @author     BoldGrid <support@boldgrid.com>
  */
 
+ use BoldGrid\Connect;
+
 /**
  * Class: Boldgrid_Connect
  *
@@ -43,6 +45,7 @@ class Boldgrid_Connect {
 	public function __construct() {
 		$this->load_dependencies();
 		$this->define_admin_hooks();
+		$this->load_rest_api();
 	}
 
 	/**
@@ -65,6 +68,8 @@ class Boldgrid_Connect {
 	 * @see Boldgrid_Connect_Loader()
 	 */
 	private function load_dependencies() {
+		require_once BOLDGRID_CONNECT_PATH . '/autoload.php';
+
 		/**
 		 * The class responsible for orchestrating the actions and filters of the core plugin.
 		 */
@@ -92,6 +97,16 @@ class Boldgrid_Connect {
 
 		$this->loader = new Boldgrid_Connect_Loader();
 
+	}
+
+	/**
+	 * Load the rest API.
+	 *
+	 * @since 2.0.0
+	 */
+	private function load_rest_api() {
+		$server = new Connect\Rest\Server();
+		$server->initialize();
 	}
 
 	/**
