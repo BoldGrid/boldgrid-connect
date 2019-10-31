@@ -25,6 +25,34 @@ class Installer
 		// include any needed files.
 	}
 
+	public function list() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$plugins = [];
+		foreach( \get_plugins() as $filePath => $plugin ) {
+			$plugin['File'] = $filePath;
+			$plugin['IsActive'] = is_plugin_active( $filePath );
+			$plugins[] = $plugin;
+		}
+
+		return $plugins;
+	}
+
+	public function delete( $files ) {
+		include_once ABSPATH . 'wp-admin/includes/misc.php';
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		include_once BOLDGRID_CONNECT_PATH . 'includes/class-boldgrid-connect-upgrader.php';
+
+		deactivate_plugins( $files );
+
+		foreach( $files as $file ) {
+			$upgrader = new \Plugin_Upgrader( new \Boldgrid_Connect_Upgrader_Skin() );
+			$upgrader->clear_destination( trailingslashit( WP_PLUGIN_DIR ) . plugin_dir_path( $file ) );
+		}
+	}
+
 	public function replace() {
 		// modify these variables with your new/old plugin values
 		$plugin_slug = 'wp-reset/wp-reset.php';
