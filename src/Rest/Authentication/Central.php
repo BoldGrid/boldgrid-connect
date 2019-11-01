@@ -2,7 +2,7 @@
 /**
 * File: Central.php
 *
-* Setup BoldGrid Central authentication method.
+* Setup Access Token authentication method.
 *
 * @since      2.0.0
 * @package    BoldGrid\Connect\Rest
@@ -15,11 +15,13 @@ namespace BoldGrid\Connect\Rest\Authentication;
 /**
 * Class: Central
 *
-* Setup BoldGrid Central authentication method.
+* Setup Access Token authentication method.
 *
 * @since 2.0.0
 */
 class Central {
+
+	protected $restServer;
 
 	/**
 	 * Connect to listeners.
@@ -27,41 +29,51 @@ class Central {
 	 * @since 2.0.0
 	 */
 	public function initialize() {
-		$this->addRemoteAuth();
+		add_action( 'rest_api_init', function( $restServer ) {
+
+			// Store the current Rest server.
+			$this->resetServer = $restServer;
+
+			add_filter( 'rest_authentication_errors', [ $this, 'addRemoteAuth' ] );
+		} );
 	}
 
-	public function addRemoteAuth() {
-		add_action( 'rest_api_init', function( $restServer ) {
-			// Preffered method pf getting headers not working.
-			// $headers = $restServer->get_headers( wp_unslash( $_SERVER ) );
-			$headers = getallheaders();
-			if ( ! empty( $headers['Authorization'] ) ) {
-				$authValue = $headers['Authorization'];
+	/**
+	 * Authenticate the user through BoldGrid Central.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param mixed $response Null, true or WP_Error from other auth methods.
+	 * @return mixed          Null, true or WP_Error from current auth method.
+	 */
+	public function addRemoteAuth( $response ) {
+		// Another auth method already processed the request.
+		if ( ! empty( $response ) ) {
+			return $response;
+		}
 
-				// If valid, set the user.
-				if ( $authValue ) {
-					$users = get_users();
-					wp_set_current_user( $users[0]->ID );
-					$response = true;
+		// Preffered method pf getting headers not working.
+		// $headers = $restServer->get_headers( wp_unslash( $_SERVER ) );
+		$headers = getallheaders();
+		if ( ! empty( $headers['Authorization'] ) ) {
+			$authValue = $headers['Authorization'];
 
-				// If not valid respond with error.
-				} else {
-					$response = new WP_Error(
-						'restx_logged_out',
-						'Sorry, you must be logged in to make a request.',
-						[ 'status' => 401 ]
-					);
-				}
+			// If valid, set the user.
+			if ( $authValue === 'Bearer 123456-123456-123456' ) {
+				$users = get_users();
+				wp_set_current_user( $users[0]->ID );
+				$response = true;
+
+			// If not valid respond with error.
+			} else {
+				$response = new \WP_Error(
+					'restx_logged_out',
+					'Sorry, your access token is invalid.',
+					[ 'status' => 401 ]
+				);
 			}
+		}
 
-			add_filter( 'rest_authentication_errors', function( $response ) use ( $restServer ) {
-			// Another auth method already processed the request.
-				if ( ! empty( $response ) ) {
-					return $response;
-				}
-
-				return $response;
-			} );
-		} );
+		return $response;
 	}
 }
