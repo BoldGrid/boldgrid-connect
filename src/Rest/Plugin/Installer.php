@@ -19,12 +19,7 @@ namespace BoldGrid\Connect\Rest\Plugin;
 *
 * @since 2.0.0
 */
-class Installer
-{
-	public function __construct() {
-		// include any needed files.
-	}
-
+class Installer {
 	public function list() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -51,20 +46,8 @@ class Installer
 
 		foreach( $files as $file ) {
 			$upgrader = new \Plugin_Upgrader( new \Boldgrid_Connect_Upgrader_Skin() );
+			$upgrader->init();
 			$upgrader->clear_destination( trailingslashit( WP_PLUGIN_DIR ) . plugin_dir_path( $file ) );
-		}
-	}
-
-	public function isInstalled( $slug ) {
-		if (!function_exists('get_plugins')) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-		$all_plugins = get_plugins();
-
-		if (!empty($all_plugins[$slug])) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -91,14 +74,5 @@ class Installer
 		$upgrader->install( $plugin_zip );
 
 		return $upgrader->plugin_info();
-	}
-
-	public function upgrade( $plugin_slug ) {
-		wp_cache_flush();
-
-		$upgrader = new \Boldgrid_Connect_Upgrader();
-		$upgraded = $upgrader->upgrade($plugin_slug);
-
-		return $upgraded;
 	}
 }

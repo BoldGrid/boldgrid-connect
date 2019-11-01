@@ -36,6 +36,10 @@ class Server {
 		$pluginRouter = new Plugin\Router();
 		$pluginRouter->register();
 
+		// Setup all plugin Routes.
+		$themeRouter = new Theme\Router();
+		$themeRouter->register();
+
 		$this->enableHeadCors();
 	}
 
