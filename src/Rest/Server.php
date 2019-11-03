@@ -22,7 +22,7 @@ namespace BoldGrid\Connect\Rest;
 class Server {
 
 	/**
-	 * Bind all necessarry listeners for the REST API endpoints.
+	 * Bind necessarry listeners for the REST API endpoints.
 	 *
 	 * @since 2.0.0
 	 */
@@ -32,13 +32,17 @@ class Server {
 		$authentication = new Authentication\Central();
 		$authentication->initialize();
 
-		// Setup all plugin Routes.
+		// Setup plugin Routes.
 		$pluginRouter = new Plugin\Router();
 		$pluginRouter->register();
 
-		// Setup all plugin Routes.
+		// Setup Theme Routes.
 		$themeRouter = new Theme\Router();
 		$themeRouter->register();
+
+		// Setup Theme Routes.
+		$optionRouter = new Option\Router();
+		$optionRouter->register();
 
 		$this->enableHeadCors();
 	}

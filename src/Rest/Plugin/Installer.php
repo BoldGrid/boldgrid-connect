@@ -20,6 +20,14 @@ namespace BoldGrid\Connect\Rest\Plugin;
 * @since 2.0.0
 */
 class Installer {
+
+	/**
+	 * List installed plugins.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
 	public function list() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -37,6 +45,14 @@ class Installer {
 		return $plugins;
 	}
 
+	/**
+	 * Delete a plugin.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $files List of plugin files.
+	 * @return void
+	 */
 	public function delete( $files ) {
 		include_once ABSPATH . 'wp-admin/includes/misc.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
