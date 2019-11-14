@@ -88,12 +88,8 @@ class Router {
 				),
 				'active' => array(
 					'required' => true,
-					'type' => 'string',
-					'description' => 'Is Active state. 1 to activate plugin 0 to deactivate.',
-					'enum' => array(
-						'1',
-						'0',
-				   ),
+					'type' => 'bool',
+					'description' => 'Is Active state. true to activate plugin false to deactivate.',
 				),
 			]
 		) );
@@ -189,12 +185,8 @@ class Router {
 			'permission_callback' => [ $this, 'pluginPermissionCheck' ],
 			'args' => [
 				'activate' => array(
-					'type' => 'string',
+					'type' => 'bool',
 					'description' => '1 to activate plugin 0 to deactivate.',
-					'enum' => array(
-						'1',
-						'0',
-				   ),
 				),
 				'plugins' => array(
 					'required' => true,

@@ -60,7 +60,7 @@ class Boldgrid_Connect_Login {
 	 *
 	 * @return WP_User|false
 	 */
-	protected function get_user() {
+	public function get_user() {
 		$args = array(
 			'role'   => 'administrator',
 			'order'  => 'DESC',
@@ -149,7 +149,7 @@ class Boldgrid_Connect_Login {
 	 * @param  string $token Login token.
 	 * @return bool
 	 */
-	protected function remote_validate( $token ) {
+	public function remote_validate( $token ) {
 		$configs   = Boldgrid_Connect_Service::get( 'configs' );
 		$url       = $configs['asset_server'] . $configs['ajax_calls']['verify_site_token'];
 		$args      = array(

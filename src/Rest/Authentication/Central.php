@@ -36,6 +36,10 @@ class Central {
 
 			add_filter( 'rest_authentication_errors', [ $this, 'addRemoteAuth' ] );
 		} );
+
+		// Setup authentication routes.
+		$router = new Router();
+		$router->register();
 	}
 
 	/**
@@ -58,14 +62,17 @@ class Central {
 		if ( ! empty( $headers['Authorization'] ) ) {
 			$authValue = $headers['Authorization'];
 
-			// If valid, set the user.
-			if ( $authValue === 'Bearer 123456-123456-123456' ) {
-				$users = get_users();
-				wp_set_current_user( $users[0]->ID );
+			// Validate the access token for a user and set them as the current user.
+			$tokenHelper = new Token();
+			$user = $tokenHelper->getAuthenticatedUser( $authValue );
+			if ( $user ) {
+				wp_set_current_user( $user->ID );
 				$response = true;
 
 			// If not valid respond with error.
 			} else {
+				sleep( 3 );
+
 				$response = new \WP_Error(
 					'restx_logged_out',
 					'Sorry, your access token is invalid.',

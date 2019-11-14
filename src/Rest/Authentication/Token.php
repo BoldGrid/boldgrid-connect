@@ -1,0 +1,141 @@
+<?php
+/**
+* File: Central.php
+*
+* Setup Access Token authentication method.
+*
+* @since      2.0.0
+* @package    BoldGrid\Connect\Rest
+* @author     BoldGrid <support@boldgrid.com>
+* @link       https://boldgrid.com
+*/
+
+namespace BoldGrid\Connect\Rest\Authentication;
+
+/**
+* Class: Central
+*
+* Setup Access Token authentication method.
+*
+* @since 2.0.0
+*/
+class Token {
+
+	/**
+	 * Save an access token for the user.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param WP_User $user
+	 * @return array Access token.
+	 */
+	public function create( $user ) {
+		$accessTokens = get_user_option( 'bgc_access_tokens', $user->ID );
+		$accessTokens = $this->cleanUpOldTokens( $accessTokens );
+
+		$rawToken = wp_generate_password( 128 );
+
+		$newAccessToken = [
+			'site_url' => get_site_url(),
+			'wp_user_id' => $user->ID,
+			'access_token_hash' => wp_hash_password( $rawToken ),
+			'expires_at' => strtotime( '+2 hours' ),
+			'issued_at' => time(),
+		];
+
+		$accessTokens[] = $newAccessToken;
+
+		update_user_option( $user->ID, 'bgc_access_tokens', $accessTokens );
+
+		unset( $newAccessToken['access_token_hash'] );
+		$newAccessToken['access_token'] = base64_encode( $user->ID . ':' . $rawToken );
+
+		return $newAccessToken;
+	}
+
+	/**
+	 * Validate WP Token.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $headerValue Header value.
+	 * @return WP_User
+	 */
+	public function getAuthenticatedUser( $headerValue ) {
+		$tokenValue = preg_replace( '/Bearer\s+/', '', $headerValue );
+
+		$tokenValue = base64_decode( $tokenValue );
+		$split = explode( ':', $tokenValue );
+		$userId = ! empty( $split[0] ) ? $split[0] : null;
+		$providedToken = ! empty( $split[1] ) ? $split[1] : null;
+
+		$user = false;
+		if ( $userId && $providedToken ) {
+
+			// Get saved access tokens.
+			$accessTokens = get_user_option( 'bgc_access_tokens', $userId );
+
+			if ( is_array( $accessTokens ) ) {
+				$matchedToken = $this->findMatchingToken( $accessTokens, $providedToken );
+
+				// Validate expiration.
+				$valid = ! empty( $matchedToken['expires_at'] ) && $matchedToken['expires_at'] > time();
+
+				// Get user object.
+				if ( $valid ) {
+					$user = get_user_by( 'id', $userId );
+				}
+			}
+		}
+
+		return $user;
+	}
+
+	/**
+	 * Remove old access tokens.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $accessTokens List of saved access tokens.
+	 * @return array Valid tokens.
+	 */
+	private function cleanUpOldTokens( $accessTokens ) {
+		$updatedAccessTokens = [];
+		foreach ( $accessTokens as $accessToken ) {
+			if ( ! empty( $accessToken['expires_at'] ) ) {
+
+				// Token will remain for at least an hour.
+				if ( ( $accessToken['expires_at'] + 3600 ) > time() ) {
+					$updatedAccessTokens[] = $accessToken;
+				}
+			}
+		}
+
+		return $updatedAccessTokens;
+	}
+
+	/**
+	 * Find a matching token.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $accessTokens   List of access tokens for this user in the DB.
+	 * @param string $providedToken Users Token.
+	 * @return array.               Token args.
+	 */
+	private function findMatchingToken( $accessTokens, $providedToken ) {
+		// Find matching value.
+		$matchedTokenParams = array_filter( $accessTokens, function ( $token ) use ( $providedToken ) {
+			$match = false;
+			if ( ! empty( $token['access_token_hash'] ) ) {
+				if ( wp_check_password( $providedToken, $token['access_token_hash'] ) ) {
+					$match = true;
+				}
+			}
+
+			return $match;
+		} );
+
+		return reset( $matchedTokenParams );
+	}
+}
