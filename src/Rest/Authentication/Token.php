@@ -39,6 +39,7 @@ class Token {
 
 		$newAccessToken = [
 			'site_url' => get_site_url(),
+			'login_url' => wp_login_url(),
 			'wp_user_id' => $user->ID,
 			'access_token_hash' => wp_hash_password( $rawToken ),
 			'expires_at' => strtotime( '+2 hours' ),
@@ -125,7 +126,20 @@ class Token {
 	public function getAuthenticatedUser( $headerValue ) {
 		$tokenValue = preg_replace( '/Bearer\s+/', '', $headerValue );
 
-		$tokenValue = base64_decode( $tokenValue );
+		return $this->getValidUser( $tokenValue );
+	}
+
+	/**
+	 * Validate a given token for a user.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $providedToken Access Token from user.
+	 * @param int    $userId        User Id to auth as.
+	 * @return WP_User
+	 */
+	public function getValidUser( $providedToken ) {
+		$tokenValue = base64_decode( $providedToken );
 		$split = explode( ':', $tokenValue );
 		$userId = ! empty( $split[0] ) ? $split[0] : null;
 		$providedToken = ! empty( $split[1] ) ? $split[1] : null;

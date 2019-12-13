@@ -43,7 +43,7 @@ class Boldgrid_Connect_Login {
 			'init', function () use ( $login ) {
 				global $pagenow;
 
-				if ( 'wp-login.php' === $pagenow && \Boldgrid\Library\Library\Configs::get( 'key' ) ) {
+				if ( 'wp-login.php' === $pagenow && get_option( 'boldgrid_api_key' ) ) {
 					$login->authenticate();
 				}
 			}, 20
@@ -88,8 +88,7 @@ class Boldgrid_Connect_Login {
 	public function authenticate() {
 		// Authentication parameters.
 		$token        = ! empty( $_POST['token'] ) ? sanitize_text_field( $_POST['token'] ) : null; // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-		$redirect_url = ! empty( $_POST['redirect_url'] ) ? // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-			esc_url_raw( $_POST['redirect_url'] ) : user_admin_url();
+		$redirect_url = ! empty( $_POST['redirect_url'] ) ? $_POST['redirect_url'] : user_admin_url(); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		if ( is_user_logged_in() && $token ) {
 			wp_safe_redirect( $redirect_url );
@@ -100,8 +99,18 @@ class Boldgrid_Connect_Login {
 
 		if ( $token ) {
 			$user = $this->get_user();
+			if ( ! empty( $_POST['environment_id'] ) ) {
+				$tokenValidator = new \BoldGrid\Connect\Rest\Authentication\Token();
+				if ( ! empty( $_POST['has_access_token'] ) ) {
+					$user = $tokenValidator->getValidUser( $token );
 
-			$valid = $user && $this->remote_validate( $token );
+					$valid = $user && ! empty( $user->ID );
+				} else {
+					$valid = $user && $tokenValidator->remoteValidate( $token );
+				}
+			} else {
+				$valid = $user && $this->remote_validate( $token );
+			}
 
 			if ( $valid ) {
 				$this->login( $user, $redirect_url );
@@ -155,7 +164,7 @@ class Boldgrid_Connect_Login {
 		$args      = array(
 			'method'  => 'POST',
 			'body'    => array(
-				'key'   => \Boldgrid\Library\Library\Configs::get( 'key' ),
+				'key'   => get_option( 'boldgrid_api_key' ),
 				'token' => $token,
 			),
 			'timeout' => 10,
