@@ -25,6 +25,8 @@ return array(
 		'get_plugin_version' => '/api/open/get-plugin-version',
 		'get_asset'          => '/api/open/get-asset',
 		'verify_site_token'  => '/v1/connect-keys/sites/token',
+		'verify_env_token'   => '/v1/environments/auth',
+		'validate_env'       => '/v1/register-environment',
 	),
 	'asset_server'          => 'https://api.boldgrid.com',
 	'plugin_name'           => 'boldgrid-connect',

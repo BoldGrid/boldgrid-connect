@@ -81,10 +81,14 @@ class Router {
 				return $response;
 			},
 			'permission_callback' => function( $request ) {
-				$token = $request->get_param( 'token' );
+				$environmentId = $request->get_param( 'environment_id' );
+				$tokenVal = $request->get_param( 'token' );
+				$token = new Token();
 
-				$login = new \Boldgrid_Connect_Login();
-				return $login->remote_validate( $token );
+				// If this site has never connected, register it.
+				$token->registerSite( $environmentId );
+
+				return $token->remoteValidate( $tokenVal );
 			},
 			'args' => [
 				'token' => [
