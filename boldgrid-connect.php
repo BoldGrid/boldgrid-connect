@@ -56,6 +56,7 @@ function run_boldgrid_connect() {
 	// Load the BoldGrid Library.
 	$loader = require BOLDGRID_CONNECT_PATH . '/vendor/autoload.php';
 
+	/*
 	$load = new Boldgrid\Library\Util\Load(
 		array(
 			'type'            => 'plugin',
@@ -65,6 +66,7 @@ function run_boldgrid_connect() {
 			'licenseActivate' => false,
 		)
 	);
+	*/
 
 	// Load the plugin.
 	$plugin = new Boldgrid_Connect();

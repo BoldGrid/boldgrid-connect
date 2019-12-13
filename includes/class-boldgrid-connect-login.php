@@ -31,7 +31,6 @@ class Boldgrid_Connect_Login {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @see \Boldgrid\Library\Library\Configs::get()
 	 * @see Boldgrid_Connect_Login::authenticate()
 	 *
 	 * @global $pagenow The current page/script filename, according to WordPress.
@@ -150,7 +149,6 @@ class Boldgrid_Connect_Login {
 	 * @since 1.0.0
 	 *
 	 * @see Boldgrid_Connect_Service::get()
-	 * @see \Boldgrid\Library\Library\Configs::get()
 	 * @see wp_remote_post()
 	 * @see wp_remote_retrieve_response_code()
 	 * @see wp_remote_retrieve_body()
