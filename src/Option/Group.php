@@ -26,7 +26,7 @@ abstract class Group {
 	/**
 	 * Retrieve an option from the stored list of editor options.
 	 *
-	 * @since 1.3
+	 * @since 2.0.0
 	 *
 	 * @param string $key Index of value.
 	 * @param mixed  $default Default value if not found.
@@ -41,7 +41,7 @@ abstract class Group {
 	/**
 	 * Store an option for the plugin in a single option.
 	 *
-	 * @since 1.3
+	 * @since 2.0.0
 	 *
 	 * @param string $key Name of value of value.
 	 * @param mixed  $value Value to store.
@@ -56,7 +56,7 @@ abstract class Group {
 	/**
 	 * Delete key from options array.
 	 *
-	 * @since 1.6
+	 * @since 2.0.0
 	 *
 	 * @param  string $key
 	 */
@@ -71,7 +71,7 @@ abstract class Group {
 	/**
 	 * Delete the BoldGrid Editor Option.
 	 *
-	 * @since 1.6
+	 * @since 2.0.0
 	 */
 	public static function clear() {
 		delete_option( static::OPTION_NAMESPACE );

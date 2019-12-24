@@ -54,7 +54,8 @@ class Server {
 	 */
 	private function enableHeadCors() {
 		add_action( 'send_headers', function() {
-			if ( ! did_action('rest_api_init') && $_SERVER['REQUEST_METHOD'] == 'HEAD' ) {
+			$requestMethod = ! empty( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : null;
+			if ( ! did_action('rest_api_init') && $requestMethod === 'HEAD' ) {
 				header( 'Access-Control-Allow-Origin: *' );
 				header( 'Access-Control-Expose-Headers: Link' );
 				header( 'Access-Control-Allow-Methods: HEAD' );

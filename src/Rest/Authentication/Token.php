@@ -28,7 +28,7 @@ class Token {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_User $user
+	 * @param WP_User $user WP User to create an access token for.
 	 * @return array Access token.
 	 */
 	public function create( $user ) {
@@ -59,7 +59,9 @@ class Token {
 	/**
 	 * Update the registed environment stored as an option.
 	 *
-	 * @since X.X.X
+	 * @since 2.0.0
+	 *
+	 * @param string $environmentId Environment ID.
 	 */
 	public function registerSite( $environmentId ) {
 		if ( ! $environmentId ) {

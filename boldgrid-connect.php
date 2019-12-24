@@ -53,40 +53,9 @@ require BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect.php';
  * @since    1.0.0
  */
 function run_boldgrid_connect() {
-	// Load the BoldGrid Library.
-	$loader = require BOLDGRID_CONNECT_PATH . '/vendor/autoload.php';
-
-	/*
-	$load = new Boldgrid\Library\Util\Load(
-		array(
-			'type'            => 'plugin',
-			'file'            => plugin_basename( __FILE__ ),
-			'loader'          => $loader,
-			'keyValidate'     => true,
-			'licenseActivate' => false,
-		)
-	);
-	*/
-
 	// Load the plugin.
 	$plugin = new Boldgrid_Connect();
 	$plugin->run();
 }
 
 run_boldgrid_connect();
-
-add_action( 'add_meta_boxes_admin_page_my-inspiration', function() {
-	add_meta_box(
-		'current_inspiration',
-		esc_html__( 'Publish Website', 'boldgrid-inspirations' ),
-		function () { ?>
-			<p>You've deployed this site on a development environment. To make
-			this website public, you'll need to transfer to a production environment.
-			Head back over to WordPress Central when you're done making changes to deploy your website.</p>
-			<a href="#" class="button button-primary">Publish Site</a>
-		<?php
-		},
-		'admin_page_my-inspiration',
-		'container6'
-	);
-}, 99 );
