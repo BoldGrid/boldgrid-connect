@@ -30,6 +30,8 @@ class Installer {
 	 * @return array Formatted theme.
 	 */
 	public function formatThemeResource( $wpTheme ) {
+		include_once ABSPATH . 'wp-admin/includes/theme.php';
+
 		$fields = [
 			'Name',
 			'ThemeURI',
@@ -48,8 +50,8 @@ class Installer {
 		foreach ( $fields as $field ) {
 			$formatted[ $field ] = $wpTheme->get( $field );
 		}
-
-		$formatted['IsActive'] = $this->activeStylesheet === get_stylesheet();
+		$formatted['IsActive'] = $wpTheme->get_stylesheet() === get_stylesheet();
+		$formatted['UpdateAvailable'] = (bool) \get_theme_update_available( $wpTheme );
 
 		return $formatted;
 	}

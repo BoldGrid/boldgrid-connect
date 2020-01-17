@@ -40,9 +40,13 @@ class Server {
 		$themeRouter = new Theme\Router();
 		$themeRouter->register();
 
-		// Setup Theme Routes.
+		// Setup Options Routes.
 		$optionRouter = new Option\Router();
 		$optionRouter->register();
+
+		// Setup Site Health Routes.
+		$healthRouter = new Health\Router();
+		$healthRouter->register();
 
 		$this->enableHeadCors();
 	}
