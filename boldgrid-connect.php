@@ -73,6 +73,9 @@ function run_boldgrid_connect() {
 	$plugin->run();
 }
 
+// Temporary-- contents should be moved into other plugins.
+include BOLDGRID_CONNECT_PATH . '/src/temp.php';
+
 run_boldgrid_connect();
 
 add_action( 'add_meta_boxes_admin_page_my-inspiration', function() {

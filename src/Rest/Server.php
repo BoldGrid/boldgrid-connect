@@ -48,6 +48,10 @@ class Server {
 		$healthRouter = new Health\Router();
 		$healthRouter->register();
 
+		// Setup Site Cache Routes.
+		$cacheRouter = new Cache\Router();
+		$cacheRouter->register();
+
 		$this->enableHeadCors();
 	}
 

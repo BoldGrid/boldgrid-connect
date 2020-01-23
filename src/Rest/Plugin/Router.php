@@ -46,7 +46,7 @@ class Router {
 			$this->registerInstallPlugin();
 			$this->registerList();
 			$this->registerRemove();
-			$this->registerStatus();
+			$this->registerActivate();
 		} );
 	}
 
@@ -57,7 +57,7 @@ class Router {
 	 *
 	 * @return void
 	 */
-	public function registerStatus() {
+	public function registerActivate() {
 		register_rest_route( 'bgc/v1', '/plugins/', array(
 			'methods' => 'PATCH',
 			'callback' => function ( $request ) {
