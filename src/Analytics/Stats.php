@@ -48,7 +48,9 @@ class Stats {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-debug-data.php' );
 		}
 
-		require_once( ABSPATH . 'wp-admin/includes/update.php' );
+		require_once ABSPATH . 'wp-admin/includes/update.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
 		return \WP_Debug_Data::debug_data();
 	}
 }
