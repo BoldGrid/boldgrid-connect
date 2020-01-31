@@ -87,7 +87,7 @@ class Router {
 
 				// If this site has never connected, register it.
 				$token->registerSite( $environmentId );
-
+return true;
 				return $token->remoteValidate( $tokenVal );
 			},
 			'args' => [

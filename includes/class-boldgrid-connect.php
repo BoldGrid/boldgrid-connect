@@ -45,6 +45,7 @@ class Boldgrid_Connect {
 	public function __construct() {
 		$this->load_dependencies();
 		$this->define_admin_hooks();
+		$this->load_analytics();
 		$this->load_rest_api();
 	}
 
@@ -107,6 +108,11 @@ class Boldgrid_Connect {
 	private function load_rest_api() {
 		$server = new Connect\Rest\Server();
 		$server->initialize();
+	}
+
+	public function load_analytics() {
+		$views = new Connect\Analytics\Views();
+		$views->initialize();
 	}
 
 	/**
