@@ -99,7 +99,7 @@ class Boldgrid_Connect_Login {
 		if ( $token ) {
 			$user = $this->get_user();
 			if ( ! empty( $_REQUEST['environment_id'] ) ) {
-				$tokenValidator = new \BoldGrid\Connect\Rest\Authentication\Token();
+				$tokenValidator = new \BoldGrid\Connect\Authentication\Token();
 				if ( ! empty( $_REQUEST['has_access_token'] ) ) {
 					$user = $tokenValidator->getValidUser( $token );
 
