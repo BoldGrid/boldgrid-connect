@@ -10,7 +10,7 @@
 * @link       https://boldgrid.com
 */
 
-namespace BoldGrid\Connect\Rest\Authentication;
+namespace BoldGrid\Connect\Authentication;
 
 use BoldGrid\Connect\Option;
 

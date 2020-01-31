@@ -10,7 +10,7 @@
 * @link       https://boldgrid.com
 */
 
-namespace BoldGrid\Connect\Rest\Option;
+namespace BoldGrid\Connect\Option;
 
 /**
 * Class: Router

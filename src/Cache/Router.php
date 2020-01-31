@@ -10,7 +10,7 @@
 * @link       https://boldgrid.com
 */
 
-namespace BoldGrid\Connect\Rest\Cache;
+namespace BoldGrid\Connect\Cache;
 
 /**
 * Class: Router
@@ -64,7 +64,7 @@ class Router {
 			'methods' => 'POST',
 			'callback' => function () {
 				if ( function_exists( 'w3tc_config' ) && class_exists( '\W3TC\Dispatcher' ) ) {
-					$config = w3tc_config();
+					$config = \w3tc_config();
 					$config->set('pgcache.enabled', true);
 					$config->save();
 
@@ -96,7 +96,7 @@ class Router {
 	public function getSettings() {
 		$values = [];
 		if ( function_exists( 'w3tc_config' ) ) {
-			$config = w3tc_config();
+			$config = \w3tc_config();
 
 			$values = [];
 			$options = [ 'pgcache.enabled' ];

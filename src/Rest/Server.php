@@ -12,6 +12,8 @@
 
 namespace BoldGrid\Connect\Rest;
 
+use BoldGrid\Connect;
+
 /**
 * Class: Server
 *
@@ -29,28 +31,32 @@ class Server {
 	public function initialize() {
 
 		// Allow for remote authetication to the API by validating tokens with BoldGrid Central.
-		$authentication = new Authentication\Central();
+		$authentication = new Connect\Authentication\Central();
 		$authentication->initialize();
 
 		// Setup plugin Routes.
-		$pluginRouter = new Plugin\Router();
+		$pluginRouter = new Connect\Plugin\Router();
 		$pluginRouter->register();
 
 		// Setup Theme Routes.
-		$themeRouter = new Theme\Router();
+		$themeRouter = new Connect\Theme\Router();
 		$themeRouter->register();
 
 		// Setup Options Routes.
-		$optionRouter = new Option\Router();
+		$optionRouter = new Connect\Option\Router();
 		$optionRouter->register();
 
 		// Setup Site Health Routes.
-		$healthRouter = new Health\Router();
+		$healthRouter = new Connect\Health\Router();
 		$healthRouter->register();
 
 		// Setup Site Cache Routes.
-		$cacheRouter = new Cache\Router();
+		$cacheRouter = new Connect\Cache\Router();
 		$cacheRouter->register();
+
+		// Setup Site Cache Routes.
+		$analyticsRouter = new Connect\Analytics\Router();
+		$analyticsRouter->register_routes();
 
 		$this->enableHeadCors();
 	}

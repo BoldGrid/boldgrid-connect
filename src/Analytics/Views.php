@@ -1,32 +1,47 @@
 <?php
 /**
- * Class: FileSystem
+ * Class: Views
  *
- * Functions for interacting with WordPress Filesystem.
+ * Simple page view counting.
  *
  * @since      2.0.0
- * @package    BoldGrid\Connect
+ * @package    BoldGrid\Connect\Analytics
  * @author     BoldGrid <support@boldgrid.com>
  * @link       https://boldgrid.com
  */
 
-namespace Boldgrid\Connect\Analytics;
+namespace BoldGrid\Connect\Analytics;
 
 use BoldGrid\Connect\Analytics\Option;
 
 /**
- * Class: FileSystem
+ * Class: Views
  *
- * Functions for interacting with WordPress Filesystem.
+ * Simple page view counting.
  *
  * @since      2.0.0
  */
 class Views {
 
+	/**
+	 * Have we alreadt counted a page view?
+	 *
+	 * @since X.X.X
+	 */
 	protected $viewCounted = false;
+
+	/**
+	 * Status Code.
+	 *
+	 * @since X.X.X
+	 */
 	protected $statusCode;
 
+	/**
+	 * Bind the needed wp hooks.
+	 */
 	public function initialize() {
+		// Grab the current status code.
 		add_filter( 'status_header', function ( $statusHeader, $code ) {
 			$this->statusCode = $code;
 			return $statusHeader;
@@ -39,16 +54,39 @@ class Views {
 		} );
 	}
 
+	/**
+	 * Count a page view.
+	 *
+	 * @since 2.0.0
+	 */
 	public function countView() {
 		$this->viewCounted = true;
 		$date = $this->getDateFormat();
 		$value = Option::get( $date );
 		$value++;
 		Option::update( $date, $value );
-
-		error_log( print_r( get_option( 'boldgrid_connect_analytics' ), 1 ) );
 	}
 
+	/**
+	 * Get a list of stats based on page views.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return array Page Views Stats.
+	 */
+	public static function getStats() {
+		return [
+			'dates' => get_option( 'boldgrid_connect_analytics', [] ),
+		];
+	}
+
+	/**
+	 * Get the date format for saving pages.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string Date.
+	 */
 	public function getDateFormat() {
 		return date( 'Y-m-d' );
 	}
