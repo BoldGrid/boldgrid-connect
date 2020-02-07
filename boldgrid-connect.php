@@ -37,6 +37,10 @@ if ( ! defined( 'BOLDGRID_CONNECT_PATH' ) ) {
 	define( 'BOLDGRID_CONNECT_PATH', plugin_dir_path( __FILE__ ) );
 }
 
+if ( ! defined( 'BOLDGRID_CONNECT_FILE' ) ) {
+	define( 'BOLDGRID_CONNECT_FILE', __FILE__ );
+}
+
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
