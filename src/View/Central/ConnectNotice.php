@@ -93,7 +93,7 @@ class ConnectNotice {
 		printf(
 			wp_kses(
 				/* Translators: placeholders are links. */
-				__( 'By clicking the <strong>Connect to Central</strong> button, you agree to our <a href="%1$s" target="_blank">Terms of Service</a> and out <a href="%2$s" target="_blank">privacy policy</a>.', 'boldgrid-connect' ),
+				__( 'By clicking the <strong>Connect to Central</strong> button, you agree to our <a href="%1$s" target="_blank">Terms of Service</a> and our <a href="%2$s" target="_blank">privacy policy</a>.', 'boldgrid-connect' ),
 				array(
 					'a' => array(
 						'href'   => array(),
