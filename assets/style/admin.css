@@ -1,0 +1,64 @@
+.bg-container {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+.bgc-panel {
+	margin: 16px 0;
+	border: 1px solid #ccd0d4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	background: #fff;
+	font-size: 13px;
+	line-height: 1.7;
+}
+
+.bgc-connect-prompt__attn {
+	position: relative;
+	background: #f95b26;
+	color: #fff;
+	padding: 1.5em;
+}
+
+.bgc-connect-prompt__attn .dashicons {
+	margin-right: 1em;
+}
+
+.bgc-connect-prompt__attn .notice-dismiss::before {
+	color: #fff;
+}
+
+.bgc-connect-prompt__attn .notice-dismiss:hover::before {
+	color: red;
+}
+
+.bgc-connect-prompt__body {
+	display: flex;
+}
+
+.bgc-connect-prompt__description {
+	padding: 2em 3em 5em 3em;
+	width: 1250px;
+}
+
+.bgc-connect-prompt__logo {
+	width: 300px;
+}
+
+.bgc-connect-prompt__logo a {
+	display: flex;
+	height: 100%;
+	justify-content: center;
+}
+
+.bgc-connect-prompt__logo img {
+	width: 180px;
+	padding: 1em;
+}
+
+.bgc-connect-prompt__description__action {
+	margin-top: 3em;
+}
+
+.bgc-connect-prompt__description__action .button-primary {
+	margin-right: 1.5em;
+}

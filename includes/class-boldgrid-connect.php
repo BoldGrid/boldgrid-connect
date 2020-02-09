@@ -132,8 +132,8 @@ class Boldgrid_Connect {
 		$login = new Boldgrid_Connect_Login();
 		$login->setup();
 
-		$views = new Connect\View\Central\Page();
-		$views->initialize();
+		$connectNotice = new Connect\View\Central\ConnectNotice();
+		$connectNotice->initialize();
 	}
 
 	/**
