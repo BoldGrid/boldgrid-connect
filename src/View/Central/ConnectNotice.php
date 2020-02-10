@@ -115,7 +115,12 @@ class ConnectNotice {
 	 */
 	public function render() {
 		$configs = \Boldgrid_Connect_Service::get( 'configs' );
-		$connectUrl = trailingslashit( $configs['central_url'] ) . 'connect/wordpress';
+		$query = http_build_query( [
+			'url' => get_site_url(),
+			'nonce' => wp_create_nonce( 'wp_rest' )
+		] );
+
+		$connectUrl = trailingslashit( $configs['central_url'] ) . 'connect/wordpress?' . $query;
 		?>
 
 		<div class="bgc-panel bgc-connect-prompt">
