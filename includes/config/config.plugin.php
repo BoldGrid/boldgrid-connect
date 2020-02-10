@@ -29,6 +29,7 @@ return array(
 		'validate_env'       => '/v1/register-environment',
 	),
 	'asset_server'          => 'https://api.boldgrid.com',
+	'central_url'           => 'https://www.boldgrid.com/central',
 	'plugin_name'           => 'boldgrid-connect',
 	'plugin_key_code'       => 'connect',
 	'main_file_path'        => BOLDGRID_CONNECT_PATH . '/boldgrid-connect.php',

@@ -114,6 +114,8 @@ class ConnectNotice {
 	 * @since 2.0.0
 	 */
 	public function render() {
+		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+		$connectUrl = trailingslashit( $configs['central_url'] ) . 'connect/wordpress';
 		?>
 
 		<div class="bgc-panel bgc-connect-prompt">
@@ -135,7 +137,8 @@ class ConnectNotice {
 					<p><?php esc_html_e( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt vestibulum nisl, at egestas libero fringilla vel. Aenean sodales malesuada euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus.' ); ?></p>
 					<p><?php esc_html_e( 'Nunc sit amet mollis magna, id sagittis turpis. Integer sit amet ultricies nisi. Sed sit amet dui ut massa lobortis mattis. Ut nec ligula at turpis sodales dapibus nec sed lectus. '); ?></p>
 					<div class="bgc-connect-prompt__description__action">
-						<a class="button-primary"><?php esc_html_e( 'Connect to Central' ); ?></a> <?php echo self::termsOfService() ?><span>
+						<a class="button-primary" target="_blank" href="<?php echo $connectUrl ?>"><?php
+							esc_html_e( 'Connect to Central' ); ?></a> <?php echo self::termsOfService() ?><span>
 					</div>
 				</div>
 			</div>
