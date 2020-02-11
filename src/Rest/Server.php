@@ -75,7 +75,7 @@ class Server {
 				header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce');
 			}
 		} );
-
+/*
 		remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
 		add_filter( 'rest_pre_serve_request', function( $value ) {
 				header( 'Access-Control-Allow-Origin: *' );
@@ -84,5 +84,6 @@ class Server {
 				header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce');
 			return $value;
 		} );
+*/
 	}
 }
