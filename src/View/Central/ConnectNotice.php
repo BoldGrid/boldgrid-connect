@@ -115,6 +115,7 @@ class ConnectNotice {
 	 */
 	public function render() {
 		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+
 		$query = http_build_query( [
 			'url' => get_site_url(),
 			'nonce' => wp_create_nonce( 'wp_rest' )
