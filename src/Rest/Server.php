@@ -67,6 +67,7 @@ class Server {
 	 * @since 2.0.0
 	 */
 	private function enableHeadCors() {
+		// Auto discovery.
 		add_action( 'send_headers', function() {
 			if ( ! did_action('rest_api_init') && $_SERVER['REQUEST_METHOD'] == 'HEAD' ) {
 				header( 'Access-Control-Allow-Origin: *' );
@@ -76,6 +77,7 @@ class Server {
 			}
 		} );
 
+		// Cross site authentication with X-WP-Nonce.
 		remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
 		add_filter( 'rest_pre_serve_request', function( $value ) {
 				header( 'Access-Control-Allow-Origin: *' );

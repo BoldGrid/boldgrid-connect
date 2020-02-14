@@ -54,6 +54,7 @@ class ConnectNotice {
 	 * @return boolean
 	 */
 	public static function isConnected() {
+
 		return false;
 	}
 
