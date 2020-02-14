@@ -106,7 +106,7 @@ class Router {
 	 */
 	public function registerUpdate() {
 		register_rest_route( 'bgc/v1', '/options/', [
-			'methods' => 'PATCH',
+			'methods' => 'POST',
 			'callback' => function ( $request ) {
 				$option = $request->get_param( 'name' );
 				$newValue = $request->get_param( 'value' );
