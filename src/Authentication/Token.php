@@ -84,6 +84,8 @@ class Token {
 
 		if ( 200 === $httpCode && ! empty( $body['environment_id'] ) ) {
 			Option\Connect::update( 'environment_id', $body['environment_id'] );
+		} else {
+			sleep(5);
 		}
 	}
 

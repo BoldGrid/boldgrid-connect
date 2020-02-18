@@ -12,6 +12,8 @@
 
 namespace BoldGrid\Connect\View\Central;
 
+use BoldGrid\Connect\Option;
+
 /**
 * Class: Router
 *
@@ -54,8 +56,7 @@ class ConnectNotice {
 	 * @return boolean
 	 */
 	public static function isConnected() {
-
-		return false;
+		return !! Option\Connect::get( 'environment_id' );
 	}
 
 	/**
