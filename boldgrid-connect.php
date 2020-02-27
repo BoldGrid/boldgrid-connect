@@ -14,8 +14,8 @@
  * @wordpress-plugin
  * Plugin Name:       BoldGrid Connect
  * Plugin URI:        https://www.boldgrid.com
- * Description:       Toolkit for BoldGrid Connect functionality.
- * Version:           1.0.2
+ * Description:       Safe and easy management for all of your WordPress websites. SEO, Backups, 1-click login, site transfers, and more on one dashboard.
+ * Version:           2.0.0
  * Author:            BoldGrid
  * Author URI:        https://www.boldgrid.com
  * License:           GPL-2.0+
@@ -97,3 +97,14 @@ add_action( 'add_meta_boxes_admin_page_my-inspiration', function() {
 		'container6'
 	);
 }, 99 );
+
+add_filter( 'plugin_row_meta', function ( $meta, $slug ) {
+	$pluginName = 'boldgrid-connect.php';
+	$length = strlen( $pluginName );
+	$hasPluginFilename = substr($slug, -$length) === $pluginName;
+	if ( $hasPluginFilename ) {
+		$meta[] = '<a href="' . admin_url( 'tools.php' ) . '">My Connection</a>';
+	}
+
+	return $meta;
+}, 10, 2 );

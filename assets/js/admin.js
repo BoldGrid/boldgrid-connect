@@ -1,4 +1,5 @@
 /* global jQuery */
+console.log( 'fdfd' );
 ( function( $ ) {
 	var	notice = $( '.bgc-connect-prompt' ),
 	wpWelcomeNotice = $( '#welcome-panel, .wp-header-end' ),

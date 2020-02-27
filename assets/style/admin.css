@@ -1,5 +1,6 @@
 .bg-container {
 	max-width: 1100px;
+	padding-top: 2em;
 	margin: 0 auto;
 }
 
@@ -52,7 +53,7 @@
 
 .bgc-connect-prompt__logo img {
 	width: 180px;
-	padding: 1em;
+	padding: 3em;
 }
 
 .bgc-connect-prompt__description__action {
@@ -61,4 +62,25 @@
 
 .bgc-connect-prompt__description__action .button-primary {
 	margin-right: 1.5em;
+}
+
+.bgc-connect-active {
+	background: #fff;
+	max-width: 500px;
+	margin: 0 auto;
+	padding: 5em;
+}
+
+.bgc-connect-active__heading {
+	font-size: 2em;
+	margin-top: 0;
+	font-weight: lighter;
+}
+
+.bgc-connect-active__sub-heading {
+	font-weight: bold;
+}
+
+.bgc-connect-active .button {
+	margin-top: 2em;
 }

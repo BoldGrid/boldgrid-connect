@@ -29,6 +29,12 @@ class ConnectNotice {
 	 * @since 2.0.0
 	 */
 	public function initialize() {
+		$page = isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : null;
+		if ( $page === 'boldgrid-connect-central' ) {
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		}
+
+		add_action( 'admin_menu', [ $this, 'add_submenu' ] );
 		add_action( 'admin_init', function () {
 			global $pagenow;
 
@@ -43,7 +49,6 @@ class ConnectNotice {
 			) {
 				add_action( 'admin_notices', [ $this, 'render'] );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-				//add_action( 'admin_menu', [ $this, 'add_submenu' ] );
 			}
 		} );
 	}
@@ -56,6 +61,7 @@ class ConnectNotice {
 	 * @return boolean
 	 */
 	public static function isConnected() {
+		return true;
 		return !! Option\Connect::get( 'environment_id' );
 	}
 
@@ -72,17 +78,38 @@ class ConnectNotice {
 			plugins_url( './assets/js/admin.js', BOLDGRID_CONNECT_FILE ), array( 'jquery' ), BOLDGRID_CONNECT_VERSION, true );
 	}
 
-	/*
 	public function add_submenu() {
-		add_submenu_page(
-			'tools.php',
-			__( 'BoldGrid Connect', 'boldgrid-connect' ),
-			__( 'BoldGrid Connect', 'boldgrid-connect' ),
+		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+
+		add_options_page(
+			__( 'Central Connection', 'boldgrid-connect' ),
+			__( 'Central Connection', 'boldgrid-connect' ),
 			'activate_plugins',
 			'boldgrid-connect-central',
-			[ $this, 'render' ],
+			function () use ( $configs ) { ?>
+				<div class="bg-container"> <?php
+					if ( self::isConnected() ) { ?>
+						<div class="bgc-connect-active">
+							<h2 class="bgc-connect-active__heading">Site Connected</h2>
+							<p class="bgc-connect-active__sub-heading">
+								<span class="dashicons dashicons-yes-alt"></span>
+								This site's connection is working properly.</p>
+							<p>
+								Log into Central and access this site's controls. Manage your backups,
+								SEO, page speed and more!
+							</p>
+							<a target="_blank" class="button button-primary"
+								href="<?php echo $configs['central_url'] ?>">Manage In Central</a>
+						</div>
+					<?php } else {
+						$this->render();
+					}
+				?>
+				</div>
+			<?php
+			}
 		);
-	}*/
+	}
 
 	/**
 	* Prints a TOS blurb used throughout the connection prompts.
