@@ -35,10 +35,17 @@ class Installer {
 
 		wp_cache_delete( 'plugins', 'plugins' );
 
+		$updates = get_site_transient( 'update_plugins' );
+
 		$plugins = [];
 		foreach( \get_plugins() as $filePath => $plugin ) {
 			$plugin['File'] = $filePath;
 			$plugin['IsActive'] = is_plugin_active( $filePath );
+
+			if ( isset( $updates->response[ $filePath ] ) ) {
+				$plugin['Update'] = $updates->response[ $filePath ];
+			}
+
 			$plugins[] = $plugin;
 		}
 
