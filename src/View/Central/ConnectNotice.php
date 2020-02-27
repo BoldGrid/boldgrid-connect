@@ -61,7 +61,7 @@ class ConnectNotice {
 	 * @return boolean
 	 */
 	public static function isConnected() {
-		return true;
+		//return false;
 		return !! Option\Connect::get( 'environment_id' );
 	}
 
@@ -79,14 +79,13 @@ class ConnectNotice {
 	}
 
 	public function add_submenu() {
-		$configs = \Boldgrid_Connect_Service::get( 'configs' );
 
 		add_options_page(
 			__( 'Central Connection', 'boldgrid-connect' ),
 			__( 'Central Connection', 'boldgrid-connect' ),
 			'activate_plugins',
 			'boldgrid-connect-central',
-			function () use ( $configs ) { ?>
+			function () { ?>
 				<div class="bg-container"> <?php
 					if ( self::isConnected() ) { ?>
 						<div class="bgc-connect-active">
@@ -99,7 +98,7 @@ class ConnectNotice {
 								SEO, page speed and more!
 							</p>
 							<a target="_blank" class="button button-primary"
-								href="<?php echo $configs['central_url'] ?>">Manage In Central</a>
+								href="<?php echo self::getConnectUrl() ?>">Manage In Central</a>
 						</div>
 					<?php } else {
 						$this->render();
@@ -137,20 +136,25 @@ class ConnectNotice {
 		);
 	}
 
+	public function getConnectUrl() {
+		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+
+		$query = http_build_query( [
+			'url' => get_site_url(),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+			'site_title' => get_bloginfo( 'name' )
+		] );
+
+		return trailingslashit( $configs['central_url'] ) . 'connect/wordpress?' . $query;
+	}
+
 	/**
 	 * Render the connection notice.
 	 *
 	 * @since 2.0.0
 	 */
 	public function render() {
-		$configs = \Boldgrid_Connect_Service::get( 'configs' );
-
-		$query = http_build_query( [
-			'url' => get_site_url(),
-			'nonce' => wp_create_nonce( 'wp_rest' )
-		] );
-
-		$connectUrl = trailingslashit( $configs['central_url'] ) . 'connect/wordpress?' . $query;
+		$connectUrl = self::getConnectUrl();
 		?>
 
 		<div class="bgc-panel bgc-connect-prompt">
