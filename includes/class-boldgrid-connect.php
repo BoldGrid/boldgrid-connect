@@ -97,7 +97,6 @@ class Boldgrid_Connect {
 		require_once BOLDGRID_CONNECT_PATH . '/admin/class-boldgrid-connect-admin.php';
 
 		$this->loader = new Boldgrid_Connect_Loader();
-
 	}
 
 	/**

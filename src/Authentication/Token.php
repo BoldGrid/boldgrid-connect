@@ -57,39 +57,6 @@ class Token {
 	}
 
 	/**
-	 * Update the registed environment stored as an option.
-	 *
-	 * @since X.X.X
-	 */
-	public function registerSite( $environmentId ) {
-		if ( ! $environmentId ) {
-			return;
-		}
-
-		// Register a site to an environment.
-		$configs = \Boldgrid_Connect_Service::get( 'configs' );
-		$url     = $configs['asset_server'] . $configs['ajax_calls']['validate_env'];
-		$args    = array(
-			'method'  => 'GET',
-			'body'    => array(
-				'environment_id' => $environmentId,
-				'key' => get_option( 'boldgrid_api_key' ),
-			),
-			'timeout' => 15,
-		);
-
-		$response = wp_remote_get( $url, $args );
-		$httpCode = wp_remote_retrieve_response_code( $response );
-		$body     = json_decode( wp_remote_retrieve_body( $response ), true );
-
-		if ( 200 === $httpCode && ! empty( $body['environment_id'] ) ) {
-			Option\Connect::update( 'environment_id', $body['environment_id'] );
-		} else {
-			sleep(5);
-		}
-	}
-
-	/**
 	 * Validate a Central token with the BoldGrid API.
 	 *
 	 * @since X.X.X
@@ -98,23 +65,28 @@ class Token {
 	 * @param string $environmentId Api
 	 * @return boolean      Is the token valid?
 	 */
-	public function remoteValidate( $token ) {
+	public function remoteValidate( $token, $environmentId ) {
 		$configs = \Boldgrid_Connect_Service::get( 'configs' );
 		$url     = $configs['asset_server'] . $configs['ajax_calls']['verify_env_token'];
 		$args    = array(
 			'body'    => array(
 				'token' => $token,
-				'environment_id' => Option\Connect::get( 'environment_id' ),
+				'environment_id' => $environmentId,
 				'key' => get_option( 'boldgrid_api_key' ),
 			),
 			'timeout' => 15,
 		);
 
 		$response  = wp_remote_get( $url, $args );
-		$http_code = wp_remote_retrieve_response_code( $response );
+		$httpCode = wp_remote_retrieve_response_code( $response );
 		$body      = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		return 200 === $http_code && ! empty( $body['is_valid'] );
+		if ( 200 === $httpCode && ! empty( $body['is_valid'] ) ) {
+			return true;
+		} else {
+			sleep(3);
+			return false;
+		}
 	}
 
 	/**

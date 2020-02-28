@@ -83,12 +83,9 @@ class Router {
 			'permission_callback' => function( $request ) {
 				$environmentId = $request->get_param( 'environment_id' );
 				$tokenVal = $request->get_param( 'token' );
+
 				$token = new Token();
-
-				// If this site has never connected, register it.
-				$token->registerSite( $environmentId );
-
-				return $token->remoteValidate( $tokenVal );
+				return $token->remoteValidate( $tokenVal, $environmentId );
 			},
 			'args' => [
 				'token' => [
