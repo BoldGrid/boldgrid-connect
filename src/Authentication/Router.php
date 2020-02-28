@@ -54,6 +54,20 @@ class Router {
 		register_rest_route( 'bgc/v1', '/auth/', [
 			'methods' => 'POST',
 			'callback' => function ( $request ) {
+
+				// Reach out to our API servers to validate their token.
+				$environmentId = $request->get_param( 'environment_id' );
+				$tokenVal = $request->get_param( 'token' );
+				$token = new Token();
+				if ( ! $token->remoteValidate( $tokenVal, $environmentId ) ) {
+					return new \WP_Error(
+						'restx_logged_out',
+						'Sorry, your remote access token is not valid.',
+						[ 'status' => 403 ]
+					);
+				}
+
+				// If the remote token is valid assign a local token.
 				$userId = $request->get_param( 'user_id' );
 
 				// Find the requested user, or default.
@@ -79,13 +93,6 @@ class Router {
 				}
 
 				return $response;
-			},
-			'permission_callback' => function( $request ) {
-				$environmentId = $request->get_param( 'environment_id' );
-				$tokenVal = $request->get_param( 'token' );
-
-				$token = new Token();
-				return $token->remoteValidate( $tokenVal, $environmentId );
 			},
 			'args' => [
 				'token' => [
