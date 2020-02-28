@@ -34,7 +34,7 @@ class Central {
 			// Store the current Rest server.
 			$this->resetServer = $restServer;
 
-			add_filter( 'rest_authentication_errors', [ $this, 'addRemoteAuth' ] );
+			add_filter( 'rest_authentication_errors', [ $this, 'addRemoteAuth' ], 20 );
 		} );
 
 		// Setup authentication routes.
@@ -61,9 +61,14 @@ class Central {
 		$headers = getallheaders();
 		if ( ! empty( $headers['Authorization'] ) ) {
 			$authValue = $headers['Authorization'];
+			$tokenHelper = new Token();
+
+			// Don't try to validate other Auth tokens.
+			if ( ! $tokenHelper->isBGToken( $authValue ) ) {
+				return $response;
+			}
 
 			// Validate the access token for a user and set them as the current user.
-			$tokenHelper = new Token();
 			$user = $tokenHelper->getAuthenticatedUser( $authValue );
 			if ( $user ) {
 				wp_set_current_user( $user->ID );

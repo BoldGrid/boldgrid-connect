@@ -12,8 +12,6 @@
 
 namespace BoldGrid\Connect\Authentication;
 
-use BoldGrid\Connect\Option;
-
 /**
 * Class: Central
 *
@@ -54,6 +52,21 @@ class Token {
 		$newAccessToken['access_token'] = base64_encode( $user->ID . ':' . $rawToken );
 
 		return $newAccessToken;
+	}
+
+	/**
+	 * Is this the presented token formatted as a BG Token?
+	 *
+	 * @return boolean
+	 */
+	public function isBGToken( $providedToken ) {
+		$providedToken = preg_replace( '/Bearer\s+/', '', $providedToken );
+		$tokenValue = base64_decode( $providedToken );
+		$tokenValue = $tokenValue ? $tokenValue : '';
+		$split = explode( ':', $tokenValue );
+		$userId = ! empty( $split[0] ) ? $split[0] : null;
+		$providedToken = ! empty( $split[1] ) ? $split[1] : null;
+		return is_numeric( $userId ) && $userId && $providedToken;
 	}
 
 	/**
@@ -114,6 +127,7 @@ class Token {
 	 */
 	public function getValidUser( $providedToken ) {
 		$tokenValue = base64_decode( $providedToken );
+		$tokenValue = $tokenValue ? $tokenValue : '';
 		$split = explode( ':', $tokenValue );
 		$userId = ! empty( $split[0] ) ? $split[0] : null;
 		$providedToken = ! empty( $split[1] ) ? $split[1] : null;
