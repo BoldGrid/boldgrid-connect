@@ -38,7 +38,7 @@ class Installer {
 		$updates = get_site_transient( 'update_plugins' );
 
 		$plugins = [];
-		foreach( \get_plugins() as $filePath => $plugin ) {
+		foreach ( \get_plugins() as $filePath => $plugin ) {
 			$plugin['File'] = $filePath;
 			$plugin['IsActive'] = is_plugin_active( $filePath );
 
@@ -65,9 +65,7 @@ class Installer {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		include_once BOLDGRID_CONNECT_PATH . 'includes/class-boldgrid-connect-upgrader.php';
 
-		deactivate_plugins( $files );
-
-		foreach( $files as $file ) {
+		foreach ( $files as $file ) {
 			$upgrader = new \Plugin_Upgrader( new \Boldgrid_Connect_Upgrader_Skin() );
 			$upgrader->init();
 			$upgrader->clear_destination( trailingslashit( WP_PLUGIN_DIR ) . plugin_dir_path( $file ) );

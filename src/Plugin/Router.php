@@ -46,7 +46,7 @@ class Router {
 			$this->registerInstallPlugin();
 			$this->registerList();
 			$this->registerRemove();
-			$this->registerActivate();
+			$this->registerActivateDeactivate();
 		} );
 	}
 
@@ -57,12 +57,14 @@ class Router {
 	 *
 	 * @return void
 	 */
-	public function registerActivate() {
+	public function registerActivateDeactivate() {
 		register_rest_route( 'bgc/v1', '/plugins/', array(
-			'methods' => 'PATCH',
+			'methods' => 'PUT',
 			'callback' => function ( $request ) {
 				$files = $request->get_param( 'files' ) ?: [];
 				$active = $request->get_param( 'active' );
+
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 				if (  $active ) {
 					activate_plugins( $files );

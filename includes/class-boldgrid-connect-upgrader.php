@@ -62,5 +62,5 @@ class Boldgrid_Connect_Upgrader_Skin extends \WP_Upgrader_Skin {
 	 *
 	 * @param string $string The feedback string.
 	 */
-	public function feedback( $string ) {}
+	public function feedback( $string, ...$args ) {}
 }
