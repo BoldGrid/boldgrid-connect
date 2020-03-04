@@ -62,7 +62,6 @@ class Router {
 	 * @return boolean Has Access?
 	 */
 	public function pluginPermissionCheck() {
-		return true;
 		return current_user_can( 'activate_plugins' );
 	}
 }

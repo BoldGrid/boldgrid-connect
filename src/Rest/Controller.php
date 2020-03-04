@@ -31,7 +31,6 @@ class Controller extends \WP_REST_Controller {
 	protected $namespace = 'bgc/v1';
 
 	public function permissionCheck() {
-		return true;
 		return current_user_can( 'activate_plugins' );
 	}
 }
