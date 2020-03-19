@@ -57,30 +57,10 @@ require BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect.php';
  * @since    1.0.0
  */
 function run_boldgrid_connect() {
-	// Load the BoldGrid Library.
-	$loader = require BOLDGRID_CONNECT_PATH . '/vendor/autoload.php';
-
-	/*
-	$load = new Boldgrid\Library\Util\Load(
-		array(
-			'type'            => 'plugin',
-			'file'            => plugin_basename( __FILE__ ),
-			'loader'          => $loader,
-			'keyValidate'     => true,
-			'licenseActivate' => false,
-		)
-	);
-	*/
-
 	// Load the plugin.
 	$plugin = new Boldgrid_Connect();
 	$plugin->run();
 }
-
-// Temporary-- contents should be moved into other plugins.
-include BOLDGRID_CONNECT_PATH . '/src/temp.php';
-
-run_boldgrid_connect();
 
 add_action( 'add_meta_boxes_admin_page_my-inspiration', function() {
 	add_meta_box(
@@ -108,3 +88,5 @@ add_filter( 'plugin_row_meta', function ( $meta, $slug ) {
 
 	return $meta;
 }, 10, 2 );
+
+run_boldgrid_connect();

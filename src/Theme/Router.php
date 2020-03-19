@@ -204,7 +204,7 @@ class Router {
 	}
 
 	/**
-	 * Setup route to list user plugins.
+	 * Setup route to list user themes.
 	 *
 	 * @since 2.0.0
 	 *
@@ -225,7 +225,7 @@ class Router {
 	}
 
 	/**
-	 * Given a list of plugin files, make sure they all exist.
+	 * Make sure the given theme stylesheet exists.
 	 *
 	 * @since 2.0.0
 	 *

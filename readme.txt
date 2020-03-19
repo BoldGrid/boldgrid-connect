@@ -10,7 +10,9 @@ Connects users and sites with BoldGrid Central.
 
 == Description ==
 
-Connects users and sites with BoldGrid Central.
+Manage all your WordPress websites in a single dashboard. BoldGrid Central
+allows you to manage themes, plugins & backups all from within a single interface.
+Using our single sign in feature, you can log into central and access any of your connected websites.
 
 == Installation ==
 
@@ -25,9 +27,10 @@ Connects users and sites with BoldGrid Central.
 
 = 2.0.0 =
 
-Release Date: TBD
+Release Date: December 24th, 2019
 
-* Update:  Updated dependency boldgrid/library to 2.10.4.
+* Feature:  Single signin through BoldGrid Central.
+* Feature:  New rest endpoints.
 
 = 1.0.2 =
 

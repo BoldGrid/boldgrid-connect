@@ -86,8 +86,8 @@ class Boldgrid_Connect_Login {
 	 */
 	public function authenticate() {
 		// Authentication parameters.
-		$token        = ! empty( $_REQUEST['token'] ) ? sanitize_text_field( $_REQUEST['token'] ) : null; // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-		$redirect_url = ! empty( $_REQUEST['redirect_url'] ) ? $_REQUEST['redirect_url'] : user_admin_url(); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+		$token        = ! empty( $_POST['token'] ) ? sanitize_text_field( $_POST['token'] ) : null; // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+		$redirect_url = ! empty( $_POST['redirect_url'] ) ? $_POST['redirect_url'] : user_admin_url(); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
 
 		if ( is_user_logged_in() && $token ) {
 			wp_safe_redirect( $redirect_url );
@@ -98,19 +98,23 @@ class Boldgrid_Connect_Login {
 
 		if ( $token ) {
 			$user = $this->get_user();
-			if ( ! empty( $_REQUEST['environment_id'] ) ) {
+			if ( ! empty( $_POST['environment_id'] ) ) {
 				$tokenValidator = new \BoldGrid\Connect\Authentication\Token();
-				if ( ! empty( $_REQUEST['has_access_token'] ) ) {
+				if ( ! empty( $_POST['has_access_token'] ) ) {
 					$user = $tokenValidator->getValidUser( $token );
-
 					$valid = $user && ! empty( $user->ID );
+
+				// Validate an environment auth code remotely.
 				} else {
 					$valid = $user && $tokenValidator->remoteValidate( $token );
 				}
+
+			// Verify the site token.
 			} else {
 				$valid = $user && $this->remote_validate( $token );
 			}
 
+			// Log the user in.
 			if ( $valid ) {
 				$this->login( $user, $redirect_url );
 			}
@@ -167,6 +171,7 @@ class Boldgrid_Connect_Login {
 			),
 			'timeout' => 10,
 		);
+
 		$response  = wp_remote_post( $url, $args );
 		$http_code = wp_remote_retrieve_response_code( $response );
 		$body      = json_decode( wp_remote_retrieve_body( $response ), true );

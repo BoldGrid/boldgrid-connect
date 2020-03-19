@@ -58,7 +58,6 @@ class Boldgrid_Connect {
 	 * - Boldgrid_Connect_Service. Handles service objects for the plugin.
 	 * - BoldGrid_Connect_Config. Defines configuration properties of the plugin.
 	 * - Boldgrid_Connect_Login. Facilitates use of a remote secure login token.
-	 * - Boldgrid_Connect_Admin. Defines all hooks for the admin area.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -91,11 +90,6 @@ class Boldgrid_Connect {
 		 */
 		require_once BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect-login.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once BOLDGRID_CONNECT_PATH . '/admin/class-boldgrid-connect-admin.php';
-
 		$this->loader = new Boldgrid_Connect_Loader();
 	}
 
@@ -124,9 +118,6 @@ class Boldgrid_Connect {
 	private function define_admin_hooks() {
 		$config = new Boldgrid_Connect_Config();
 		$this->loader->add_action( 'init', $config, 'setup_configs' );
-
-		$plugin_admin = new Boldgrid_Connect_Admin();
-		$this->loader->add_action( 'init', $plugin_admin, 'prepare_plugin_update' );
 
 		$login = new Boldgrid_Connect_Login();
 		$login->setup();

@@ -26,7 +26,7 @@ class Token {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param WP_User $user
+	 * @param WP_User $user WP User to create an access token for.
 	 * @return array Access token.
 	 */
 	public function create( $user ) {
@@ -57,7 +57,9 @@ class Token {
 	/**
 	 * Is this the presented token formatted as a BG Token?
 	 *
-	 * @return boolean
+	 * @since 2.0.0
+	 *
+	 * @param string $environmentId Environment ID.
 	 */
 	public function isBGToken( $providedToken ) {
 		$providedToken = preg_replace( '/Bearer\s+/', '', $providedToken );

@@ -56,7 +56,7 @@ class Central {
 			return $response;
 		}
 
-		// Preffered method pf getting headers not working.
+		// Preffered method of getting headers not working.
 		// $headers = $restServer->get_headers( wp_unslash( $_SERVER ) );
 		$headers = getallheaders();
 		if ( ! empty( $headers['Authorization'] ) ) {

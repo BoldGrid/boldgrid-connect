@@ -30,7 +30,7 @@ class FileSystem {
 	/**
 	 * Accessor.
 	 *
-	 * @since 1.6
+	 * @since 2.0.0
 	 *
 	 * @return wp_filesystem Wordpress global.
 	 */
@@ -41,7 +41,7 @@ class FileSystem {
 	/**
 	 * Initialize the WP_Filesystem.
 	 *
-	 * @since 1.6
+	 * @since 2.0.0
 	 * @global $wp_filesystem WordPress Filesystem global.
 	 */
 	public function init() {
@@ -52,24 +52,5 @@ class FileSystem {
 		}
 
 		return $wp_filesystem;
-	}
-
-	/**
-	 * Save Compiled SCSS.
-	 *
-	 * @since 1.6
-	 *
-	 * @param string $content Content to save.
-	 * @param string $file File to write to.
-	 */
-	public function save( $content, $file ) {
-
-		// Write output to CSS file.
-		$chmodFile = ( 0644 & ~ umask() );
-		if ( defined( 'FS_CHMOD_FILE' ) ) {
-			$chmodFile = FS_CHMOD_FILE;
-		}
-
-		return $this->wpFilesystem->put_contents( $file, $content, $chmodFile );
 	}
 }
