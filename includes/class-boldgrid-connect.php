@@ -103,6 +103,13 @@ class Boldgrid_Connect {
 		$server->initialize();
 	}
 
+	/**
+	 * Count front end page views.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
 	public function load_analytics() {
 		$views = new Connect\Analytics\Views();
 		$views->initialize();
@@ -124,6 +131,12 @@ class Boldgrid_Connect {
 
 		$connectNotice = new Connect\View\Central\ConnectNotice();
 		$connectNotice->initialize();
+
+		$installedPlugins = new Connect\Plugin\Installed();
+		$installedPlugins->initialize();
+
+		$inspirations = new Connect\Integrations\Inspirations();
+		$inspirations->initialize();
 	}
 
 	/**

@@ -61,7 +61,6 @@ class ConnectNotice {
 	 * @return boolean
 	 */
 	public static function isConnected() {
-		//return false;
 		return !! Option\Connect::get( 'environment_id' );
 	}
 
@@ -78,27 +77,36 @@ class ConnectNotice {
 			plugins_url( './assets/js/admin.js', BOLDGRID_CONNECT_FILE ), array( 'jquery' ), BOLDGRID_CONNECT_VERSION, true );
 	}
 
+	/**
+	 * Add the submenu item labeled Central Connection.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
 	public function add_submenu() {
-
 		add_options_page(
 			__( 'Central Connection', 'boldgrid-connect' ),
 			__( 'Central Connection', 'boldgrid-connect' ),
 			'activate_plugins',
 			'boldgrid-connect-central',
-			function () { ?>
+			function () {
+				$configs = \Boldgrid_Connect_Service::get( 'configs' );
+				$centralUrl = $configs['central_url'] . '/projects?environment_id=' . Option\Connect::get( 'environment_id' );
+
+				?>
 				<div class="bg-container"> <?php
 					if ( self::isConnected() ) { ?>
 						<div class="bgc-connect-active">
-							<h2 class="bgc-connect-active__heading">Site Connected</h2>
+							<h2 class="bgc-connect-active__heading"><?php print esc_html__( 'Site Connected', 'boldgrid-connect' ) ?></h2>
 							<p class="bgc-connect-active__sub-heading">
 								<span class="dashicons dashicons-yes-alt"></span>
-								This site's connection is working properly.</p>
+								<?php print esc_html__( 'This site\'s connection is working properly.', 'boldgrid-connect' ) ?></p>
 							<p>
-								Log into Central and access this site's controls. Manage your backups,
-								SEO, page speed and more!
+								<?php print esc_html__( 'Log into Central and access this site\'s controls. Manage your backups, SEO, page speed and more!', 'boldgrid-connect' ) ?>
 							</p>
 							<a target="_blank" class="button button-primary"
-								href="<?php echo self::getConnectUrl() ?>">Manage In Central</a>
+								href="<?php print $centralUrl; ?>"><?php print esc_html__( 'Manage In Central', 'boldgrid-connect' ) ?></a>
 						</div>
 					<?php } else {
 						$this->render();
@@ -136,6 +144,13 @@ class ConnectNotice {
 		);
 	}
 
+	/**
+	 * Get the url used for connecting a new site.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string
+	 */
 	public function getConnectUrl() {
 		$configs = \Boldgrid_Connect_Service::get( 'configs' );
 
