@@ -27,7 +27,7 @@ Using our single sign in feature, you can log into central and access any of you
 
 = 2.0.0 =
 
-Release Date: December 24th, 2019
+Release Date: TBD
 
 * Feature:  Single signin through BoldGrid Central.
 * Feature:  New rest endpoints.

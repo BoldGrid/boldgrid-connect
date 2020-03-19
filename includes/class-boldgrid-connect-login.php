@@ -99,6 +99,7 @@ class Boldgrid_Connect_Login {
 		if ( $token ) {
 			$user = $this->get_user();
 			if ( ! empty( $_POST['environment_id'] ) ) {
+				$environment_id = sanitize_text_field( $_POST['environment_id'] );
 				$tokenValidator = new \BoldGrid\Connect\Authentication\Token();
 				if ( ! empty( $_POST['has_access_token'] ) ) {
 					$user = $tokenValidator->getValidUser( $token );
@@ -106,7 +107,7 @@ class Boldgrid_Connect_Login {
 
 				// Validate an environment auth code remotely.
 				} else {
-					$valid = $user && $tokenValidator->remoteValidate( $token );
+					$valid = $user && $tokenValidator->remoteValidate( $token, $environment_id );
 				}
 
 			// Verify the site token.

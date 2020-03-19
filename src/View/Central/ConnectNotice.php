@@ -177,7 +177,7 @@ class ConnectNotice {
 				<span class="dashicons dashicons-info"></span>
 				<?php esc_html_e( 'Finish setup by connecting to Central to unlock multiple WordPress environments,
 					peformance optimization, site protection and more!' ); ?>
-				<span class="notice-dismiss" title="Dismiss this notice"></span>
+				<!--- <span class="notice-dismiss" title="Dismiss this notice"></span> -->
 			</div>
 			<div class="bgc-connect-prompt__body">
 				<div class="bgc-connect-prompt__logo">
@@ -188,8 +188,8 @@ class ConnectNotice {
 				</div>
 				<div class="bgc-connect-prompt__description">
 					<h2><?php esc_html_e( 'Optimize your Workflow and Connect to Central' ); ?></h2>
-					<p><?php esc_html_e( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt vestibulum nisl, at egestas libero fringilla vel. Aenean sodales malesuada euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus.' ); ?></p>
-					<p><?php esc_html_e( 'Nunc sit amet mollis magna, id sagittis turpis. Integer sit amet ultricies nisi. Sed sit amet dui ut massa lobortis mattis. Ut nec ligula at turpis sodales dapibus nec sed lectus. '); ?></p>
+					<p><?php esc_html_e( 'Connect your site to Central for remote access to this install and any other WordPress installs you connect. Central makes it easy to set up your site if you\'re a beginner and fast if you\'re an expert. Our one-of-a-kind tools and services help you bring everything together.' ); ?></p>
+					<p><?php esc_html_e( 'Connecting to Central is completely free and includes a free WordPress environment that you can use for testing or staging changes.'); ?></p>
 					<div class="bgc-connect-prompt__description__action">
 						<a class="button-primary" target="_blank" href="<?php echo $connectUrl ?>"><?php
 							esc_html_e( 'Connect to Central' ); ?></a> <?php echo self::termsOfService() ?><span>
