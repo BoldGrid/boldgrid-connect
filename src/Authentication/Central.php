@@ -56,8 +56,6 @@ class Central {
 			return $response;
 		}
 
-		// Preffered method of getting headers not working.
-		// $headers = $restServer->get_headers( wp_unslash( $_SERVER ) );
 		$headers = getallheaders();
 		if ( ! empty( $headers['Authorization'] ) ) {
 			$authValue = $headers['Authorization'];

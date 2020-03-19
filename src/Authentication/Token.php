@@ -92,9 +92,9 @@ class Token {
 			'timeout' => 15,
 		);
 
-		$response  = wp_remote_get( $url, $args );
+		$response = wp_remote_get( $url, $args );
 		$httpCode = wp_remote_retrieve_response_code( $response );
-		$body      = json_decode( wp_remote_retrieve_body( $response ), true );
+		$body     = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		if ( 200 === $httpCode && ! empty( $body['is_valid'] ) ) {
 			return true;

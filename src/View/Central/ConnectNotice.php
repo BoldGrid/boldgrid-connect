@@ -29,7 +29,7 @@ class ConnectNotice {
 	 * @since 2.0.0
 	 */
 	public function initialize() {
-		$page = isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : null;
+		$page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : null;
 		if ( $page === 'boldgrid-connect-central' ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		}

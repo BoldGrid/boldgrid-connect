@@ -45,7 +45,7 @@ class Inspirations {
 	public function addMetaBox() {
 		// Prompt currently only shows on cloud wordpress staging sites, should be updated to show on any dev environment.
 		if ( ! defined( 'BOLDGRID_DEMO_VERSION' ) || ! Central\ConnectNotice::isConnected() ) {
-			//return;
+			return;
 		}
 
 		$configs = \Boldgrid_Connect_Service::get( 'configs' );

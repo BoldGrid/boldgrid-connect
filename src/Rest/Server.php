@@ -77,16 +77,5 @@ class Server {
 				header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce' , false);
 			}
 		} );
-
-		// Cross site authentication with X-WP-Nonce.
-		remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
-		add_filter( 'rest_pre_serve_request', function( $value ) {
-				header( 'Access-Control-Allow-Origin: *' );
-				header( 'Access-Control-Expose-Headers: Link' );
-				header( 'Access-Control-Allow-Methods: HEAD' );
-				header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce', false );
-			return $value;
-		} );
-
 	}
 }

@@ -24,7 +24,7 @@ class Controller extends \WP_REST_Controller {
 	/**
 	 * Namespace of the class.
 	 *
-	 * @since  X.X.X
+	 * @since  2.0.0
 	 * @access private
 	 * @var    string
 	 */

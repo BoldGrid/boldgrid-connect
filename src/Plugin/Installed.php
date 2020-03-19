@@ -43,7 +43,7 @@ class Installed {
 		add_filter( 'plugin_row_meta', function ( $meta, $slug ) {
 			$pluginName = 'boldgrid-connect.php';
 			$length = strlen( $pluginName );
-			$hasPluginFilename = substr($slug, -$length) === $pluginName;
+			$hasPluginFilename = substr( $slug, -$length ) === $pluginName;
 			if ( $hasPluginFilename ) {
 				$meta[] = '<a href="' . admin_url( 'options-general.php?page=boldgrid-connect-central' ) . '">' . __( 'My Connection', 'boldgrid-connect' ) . '</a>';
 			}
