@@ -34,6 +34,7 @@ class ConnectNotice {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		}
 
+		add_action( 'admin_print_footer_scripts-plugins.php', [ $this, 'printRestNonce' ] );
 		add_action( 'admin_menu', [ $this, 'add_submenu' ] );
 		add_action( 'admin_init', function () {
 			global $pagenow;
@@ -51,6 +52,17 @@ class ConnectNotice {
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 			}
 		} );
+	}
+
+	/**
+	 * Print the rest nonce in the footer.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function printRestNonce() {
+		print '<script id="bgc-wprest-nonce" type="application/json">{ "nonce": "' . wp_create_nonce( 'wp_rest' ) . '"}</script>';
 	}
 
 	/**

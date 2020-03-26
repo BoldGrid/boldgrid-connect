@@ -113,6 +113,11 @@ class Router {
 
 				update_option( $option, $newValue );
 
+				if ( 'boldgrid_api_key' === $option ) {
+					delete_transient( 'boldgrid_api_data' );
+					delete_site_transient( 'boldgrid_api_data' );
+				}
+
 				$response = new \WP_REST_Response( [
 					'data' => get_option( $option, null )
 				] );
