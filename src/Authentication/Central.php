@@ -57,8 +57,8 @@ class Central {
 		}
 
 		$headers = getallheaders();
-		if ( ! empty( $headers['Authorization'] ) ) {
-			$authValue = $headers['Authorization'];
+		if ( ! empty( $headers['X-Bgc-Auth'] ) ) {
+			$authValue = $headers['X-Bgc-Auth'];
 			$tokenHelper = new Token();
 
 			// Don't try to validate other Auth tokens.
