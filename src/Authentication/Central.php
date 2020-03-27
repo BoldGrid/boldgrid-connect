@@ -56,9 +56,8 @@ class Central {
 			return $response;
 		}
 
-		$headers = getallheaders();
-		if ( ! empty( $headers['X-Bgc-Auth'] ) ) {
-			$authValue = $headers['X-Bgc-Auth'];
+		$authValue = $this->getHeader( 'X-BGC-Auth' );
+		if ( $authValue ) {
 			$tokenHelper = new Token();
 
 			// Don't try to validate other Auth tokens.
@@ -85,5 +84,27 @@ class Central {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Get a header value case insensitive.
+	 *
+	 * @since X.X.X
+	 *
+	 * @param string $headerKey Index of header.
+	 * @return string           Value of header.
+	 */
+	public function getHeader( $headerKey ) {
+		$headers = getallheaders();
+
+		$value = null;
+		foreach( $headers as $key => $header ) {
+			if ( strtolower( $key ) === strtolower( $headerKey ) ) {
+				$value = $header;
+				break;
+			}
+		}
+
+		return $value;
 	}
 }
