@@ -12,6 +12,8 @@
 
 namespace BoldGrid\Connect\Authentication;
 
+use BoldGrid\Connect\Option;
+
 /**
 * Class: Router
 *
@@ -66,6 +68,8 @@ class Router {
 						[ 'status' => 403 ]
 					);
 				}
+
+				Option\Connect::update( 'environment_id', $environmentId );
 
 				// If the remote token is valid assign a local token.
 				$userId = $request->get_param( 'user_id' );
