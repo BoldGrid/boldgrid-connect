@@ -2,7 +2,7 @@
 Contributors: boldgrid, imh_brad, joemoto, rramo012, timph
 Tags: boldgrid, connect, manage
 Requires at least: 4.4
-Tested up to: 5.2
+Tested up to: 5.4
 Requires PHP: 5.4
 Stable tag: 1.0.2
 
