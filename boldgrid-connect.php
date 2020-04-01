@@ -41,25 +41,28 @@ if ( ! defined( 'BOLDGRID_CONNECT_FILE' ) ) {
 	define( 'BOLDGRID_CONNECT_FILE', __FILE__ );
 }
 
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect.php';
+if ( ! function_exists ( 'run_boldgrid_connect' ) ) {
+	/**
+	 * The core plugin class that is used to define internationalization,
+	 * admin-specific hooks, and public-facing site hooks.
+	 */
+	require BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect.php';
 
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
- */
-function run_boldgrid_connect() {
-	// Load the plugin.
-	$plugin = new Boldgrid_Connect();
-	$plugin->run();
+	/**
+	 * Begins execution of the plugin.
+	 *
+	 * Since everything within the plugin is registered via hooks,
+	 * then kicking off the plugin from this point in the file does
+	 * not affect the page life cycle.
+	 *
+	 * @since    1.0.0
+	 */
+	function run_boldgrid_connect() {
+		// Load the plugin.
+		$plugin = new Boldgrid_Connect();
+		$plugin->run();
+	}
+
+	run_boldgrid_connect();
 }
 
-run_boldgrid_connect();
