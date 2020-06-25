@@ -31,6 +31,7 @@ class Token {
 	 */
 	public function create( $user ) {
 		$accessTokens = get_user_option( 'bgc_access_tokens', $user->ID );
+		$accessTokens = is_array( $accessTokens ) ? $accessTokens : [];
 		$accessTokens = $this->cleanUpOldTokens( $accessTokens );
 
 		$rawToken = wp_generate_password( 128 );
