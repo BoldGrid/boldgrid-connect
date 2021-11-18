@@ -123,6 +123,8 @@ class Boldgrid_Connect {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
+		$this->overrideConfigs();
+
 		$config = new Boldgrid_Connect_Config();
 		$this->loader->add_action( 'init', $config, 'setup_configs' );
 
@@ -137,6 +139,39 @@ class Boldgrid_Connect {
 
 		$inspirations = new Connect\Integrations\Inspirations();
 		$inspirations->initialize();
+	}
+
+	/**
+	 * Override the configs.
+	 *
+	 * @since 2.0.0
+	 */
+	private function overrideConfigs() {
+		$optionConfigs = get_option( 'bg_connect_configs', [] );
+
+		add_filter( 'BoldgridDemo/configs', function( $configs ) use ( $optionConfigs ) {
+			$configs['servers']['asset'] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs['servers']['asset'];
+			return $configs;
+		} );
+
+		// Inspirations
+		add_filter( 'boldgrid_inspirations_configs', function ( $configs ) use ( $optionConfigs ) {
+			$configs[ 'asset_server' ] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs['servers']['asset'];
+			return $configs;
+		} );
+
+		// BoldGrid Library
+		add_filter( 'Boldgrid\Library\Configs\set', function( $configs ) use ( $optionConfigs ) {
+			$configs[ 'api' ] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'api' ];
+			return $configs;
+		} );
+
+		// BoldGrid Connect Plugin.
+		add_filter( 'boldgrid_connect_config_setup_configs', function( $configs ) use ( $optionConfigs ) {
+			$configs['asset_server'] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'asset_server' ];
+			$configs['central_url'] = ! empty( $optionConfigs['central_url'] ) ? $optionConfigs['central_url'] : $configs[ 'central_url' ];
+			return $configs;
+		} );
 	}
 
 	/**
