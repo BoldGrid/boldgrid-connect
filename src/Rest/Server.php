@@ -74,17 +74,17 @@ class Server {
 				header( 'Access-Control-Allow-Origin: *' );
 				header( 'Access-Control-Expose-Headers: Link' );
 				header( 'Access-Control-Allow-Methods: HEAD' );
-				header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, X-BGC-Auth' , false);
+				header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, X-BGC-Auth, Content-Type, Content-Disposition, Content-MD5' , false);
 			}
 		} );
 
-		// Cross site authentication with X-WP-Nonce.
+		//Cross site authentication with X-WP-Nonce.
 		remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
 		add_filter( 'rest_pre_serve_request', function ( $value ) {
-			header( 'Access-Control-Allow-Origin: *' );
-			header( 'Access-Control-Expose-Headers: Link' );
-			header( 'Access-Control-Allow-Methods: HEAD' );
-			header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, X-BGC-Auth', false );
+			header( 'Access-Control-Allow-Origin: *' );
+			header( 'Access-Control-Expose-Headers: Link' );
+			header( 'Access-Control-Allow-Methods: HEAD' );
+			header( 'Access-Control-Allow-Headers: Authorization, X-WP-Nonce, Content-Type, Content-Disposition, Content-MD5, X-BGC-Auth', false );
 			return $value;
 		} );
 	}
