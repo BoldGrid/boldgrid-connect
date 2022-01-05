@@ -82,6 +82,8 @@ class Token {
 	 * @return boolean      Is the token valid?
 	 */
 	public function remoteValidate( $token, $environmentId ) {
+		do_action('bgc_remote_validate');
+
 		$configs = \Boldgrid_Connect_Service::get( 'configs' );
 		$url     = $configs['asset_server'] . $configs['ajax_calls']['verify_env_token'];
 		$args    = array(
