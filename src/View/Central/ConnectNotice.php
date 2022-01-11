@@ -33,7 +33,8 @@ class ConnectNotice {
 		if ( $page === 'boldgrid-connect-central' ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		}
-
+		
+		add_action( 'admin_post_boldgrid_connect_provider', [ $this, 'admin_post' ] );
 		add_action( 'admin_print_footer_scripts-plugins.php', [ $this, 'printRestNonce' ] );
 		add_action( 'admin_menu', [ $this, 'add_submenu' ] );
 		add_action( 'admin_init', function () {
@@ -50,6 +51,7 @@ class ConnectNotice {
 			) {
 				add_action( 'admin_notices', [ $this, 'render'] );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+				
 			}
 		} );
 	}
@@ -82,11 +84,25 @@ class ConnectNotice {
 	 * @since 2.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style( 'bgc-connect-styles',
-			plugins_url( './assets/style/admin.css', BOLDGRID_CONNECT_FILE ), array(), BOLDGRID_CONNECT_VERSION );
+		wp_enqueue_style( 'bgc-connect-styles', plugins_url( './assets/style/admin.css', BOLDGRID_CONNECT_FILE ), array(), BOLDGRID_CONNECT_VERSION );
 
-		wp_enqueue_script( 'bgc-connect-script',
-			plugins_url( './assets/js/admin.js', BOLDGRID_CONNECT_FILE ), array( 'jquery' ), BOLDGRID_CONNECT_VERSION, true );
+		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
+
+		global $_wp_admin_css_colors;
+
+		$user_admin_color = get_user_meta(get_current_user_id(), 'admin_color', true);
+		$color = $_wp_admin_css_colors[$user_admin_color]->colors[2];
+
+		if ( ! empty( $provider ) && ! empty( $configs['branding'][ $provider ]['primaryColor'] ) ) {
+			$color = $configs['branding'][ $provider ]['primaryColor'];
+		}
+
+		$custom_css = ".bgc-connect-prompt__attn { background-color: {$color}; }";
+
+		wp_add_inline_style( 'bgc-connect-styles', $custom_css );
+
+		wp_enqueue_script( 'bgc-connect-script', plugins_url( './assets/js/admin.js', BOLDGRID_CONNECT_FILE ), array( 'jquery' ), BOLDGRID_CONNECT_VERSION, true );
 	}
 
 	/**
@@ -103,7 +119,7 @@ class ConnectNotice {
 			'activate_plugins',
 			'boldgrid-connect-central',
 			function () {
-				$configs = \Boldgrid_Connect_Service::get( 'configs' );
+				$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
 				$centralUrl = $configs['central_url'] . '/projects?environment_id=' . Option\Connect::get( 'environment_id' );
 
 				?>
@@ -138,10 +154,13 @@ class ConnectNotice {
 	* @echo string
 	*/
 	public static function termsOfService() {
+		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
+
 		printf(
 			wp_kses(
 				/* Translators: placeholders are links. */
-				__( 'By clicking the <strong>Connect to Central</strong> button, you agree to our <a href="%1$s" target="_blank">Terms of Service</a> and our <a href="%2$s" target="_blank">privacy policy</a>.', 'boldgrid-connect' ),
+				__( 'By clicking the <strong>Connect to %3$s</strong> button, you agree to our <a href="%1$s" target="_blank">Terms of Service</a> and our <a href="%2$s" target="_blank">privacy policy</a>.', 'boldgrid-connect' ),
 				array(
 					'a' => array(
 						'href'   => array(),
@@ -151,8 +170,9 @@ class ConnectNotice {
 					'strong' => true,
 				)
 			),
-			'https://www.boldgrid.com/terms-of-service/',
-			'https://www.boldgrid.com/software-privacy-policy/'
+			$configs['branding'][ $provider ]['tos'],
+			$configs['branding'][ $provider ]['privacy'],
+			$configs['branding'][ $provider ]['productName']
 		);
 	}
 
@@ -164,15 +184,95 @@ class ConnectNotice {
 	 * @return string
 	 */
 	public function getConnectUrl() {
-		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
 
 		$query = http_build_query( [
 			'url' => get_site_url(),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'site_title' => get_bloginfo( 'name' )
 		] );
+		
+		return trailingslashit( $configs['branding'][ $provider ]['central_url'] ) . 'connect/wordpress?' . $query;
+	}
 
-		return trailingslashit( $configs['central_url'] ) . 'connect/wordpress?' . $query;
+	public static function getBrandLogo() {
+		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
+		$url = $configs['branding'][ $provider ]['logo'];
+
+		// Allows brands to provide external URL via config or load from local file.
+		if ( substr( $configs['branding'][ $provider ]['logo'], 0, 4 ) !== 'http' ) {
+			$url = plugins_url( $url, BOLDGRID_CONNECT_FILE );
+		}
+
+		return $url;
+	}
+
+	public static function getNoticeBody() {
+		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+		$provider = get_option( 'boldgrid_connect_provider', '' );
+		$productName = $configs['branding'][ $provider ]['productName'];
+		$connectUrl = self::getConnectUrl();
+
+		if ( ! empty( $provider ) ) : ?>
+			<div class="bgc-connect-prompt__logo">
+			<a href="<?php echo $configs['branding'][ $provider ]['providerUrl']; ?>"><img
+				src="<?php echo self::getBrandLogo(); ?>"
+				alt="<?php esc_attr_e( 'Connect your site', 'boldgrid-connect' ); ?>"
+				/></a>
+			</div>
+			<div class="bgc-connect-prompt__description">
+				<h2><?php esc_html_e( 'Optimize your Workflow and Connect to Central' ); ?></h2>
+				<p><?php esc_html_e( 'Connect your site to Central for remote access to this install and any other WordPress installs you connect. Central makes it easy to set up your site if you\'re a beginner and fast if you\'re an expert. Our one-of-a-kind tools and services help you bring everything together.' ); ?></p>
+				<p><?php esc_html_e( 'Connecting to Central is completely free and includes a free WordPress environment that you can use for testing or staging changes.'); ?></p>
+				<div class="bgc-connect-prompt__description__action">
+					<a class="button-primary" target="_blank" href="<?php echo $connectUrl ?>"><?php
+						esc_html_e( "Connect to $productName" ); ?></a> <?php echo self::termsOfService() ?>
+				</div>
+			</div>
+		<?php else : 
+			$redirect = urlencode( remove_query_arg( 'provider', $_SERVER['REQUEST_URI'] ) );
+			$redirect = urlencode( $_SERVER['REQUEST_URI'] );
+			?>
+			<div class="bgc-connect-prompt__description">
+				<h2><?php esc_html_e( 'Get Started by Choosing your Central Provider' ); ?></h2>
+				<p><?php esc_html_e( 'Connect your site to a Central provider for remote access to this install and any other WordPress installs you connect.  Central makes it easy to set up your site if you\'re a beginner and fast if you\'re an expert.  Our one-of-a-kind tools and services help you bring everything together.' ); ?></p>
+				<p><?php esc_html_e( 'Connecting to Central is completely free and includes a free WordPress environment that you can use for testing or staging changes.'); ?></p>
+				<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="post">
+					<input type="hidden" name="action" value="boldgrid_connect_provider">
+					<?php wp_nonce_field( 'boldgrid_connect_provider', 'boldgrid_connect_provider_nonce', FALSE ); ?>
+					<input type="hidden" name="_wp_http_referer" value="<?php echo $redirect; ?>">
+				<?php
+					foreach( $configs['branding'] as $providerName => $settings ) { ?>
+						<input type="radio" id="<?php echo $providerName; ?>" name="provider" value="<?php echo $providerName; ?>">
+						<label for="<?php echo $providerName; ?>"><?php echo $providerName; ?></label><br>
+					<?php } ?>
+					<?php submit_button( 'Get Started' ); ?>
+				</form> 
+			</div>
+		<?php endif;
+	}
+
+	public function admin_post() {
+		// Validate nonce.
+		if ( ! wp_verify_nonce( $_POST['boldgrid_connect_provider_nonce'], 'boldgrid_connect_provider' ) ) {
+			die( 'Invalid nonce.' . var_export( $_POST, true ) );
+		}
+			
+		// Check and set option for provider on submission.
+		if ( isset ( $_POST['provider'] ) ) {
+			update_option( 'boldgrid_connect_provider', $_POST['provider'] );
+		}
+
+		if ( ! isset ( $_POST['_wp_http_referer'] ) ) {
+			die( 'Missing target.' );
+		}
+
+		$url = add_query_arg( 'provider', $msg, urldecode( $_POST['_wp_http_referer'] ) );
+
+		wp_safe_redirect( $url );
+		exit;
 	}
 
 	/**
@@ -181,7 +281,6 @@ class ConnectNotice {
 	 * @since 2.0.0
 	 */
 	public function render() {
-		$connectUrl = self::getConnectUrl();
 		?>
 
 		<div class="bgc-panel bgc-connect-prompt">
@@ -192,21 +291,7 @@ class ConnectNotice {
 				<!--- <span class="notice-dismiss" title="Dismiss this notice"></span> -->
 			</div>
 			<div class="bgc-connect-prompt__body">
-				<div class="bgc-connect-prompt__logo">
-					<a href="https://www.boldgrid.com"><img
-						src="<?php echo plugins_url( '/assets/img/boldgrid-logo-vertical-black.svg', BOLDGRID_CONNECT_FILE ) ?>"
-						alt="<?php esc_attr_e( 'Connect your site', 'boldgrid-connect' ); ?>"
-						/></a>
-				</div>
-				<div class="bgc-connect-prompt__description">
-					<h2><?php esc_html_e( 'Optimize your Workflow and Connect to Central' ); ?></h2>
-					<p><?php esc_html_e( 'Connect your site to Central for remote access to this install and any other WordPress installs you connect. Central makes it easy to set up your site if you\'re a beginner and fast if you\'re an expert. Our one-of-a-kind tools and services help you bring everything together.' ); ?></p>
-					<p><?php esc_html_e( 'Connecting to Central is completely free and includes a free WordPress environment that you can use for testing or staging changes.'); ?></p>
-					<div class="bgc-connect-prompt__description__action">
-						<a class="button-primary" target="_blank" href="<?php echo $connectUrl ?>"><?php
-							esc_html_e( 'Connect to Central' ); ?></a> <?php echo self::termsOfService() ?><span>
-					</div>
-				</div>
+				<?php self::getNoticeBody(); ?>
 			</div>
 		</div>
 

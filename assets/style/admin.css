@@ -15,7 +15,6 @@
 
 .bgc-connect-prompt__attn {
 	position: relative;
-	background: #f95b26;
 	color: #fff;
 	padding: 1.5em;
 }
@@ -52,6 +51,8 @@
 }
 
 .bgc-connect-prompt__logo img {
+	display: flex;
+	align-self: center;
 	width: 180px;
 	padding: 3em;
 }
@@ -83,4 +84,8 @@
 
 .bgc-connect-active .button {
 	margin-top: 2em;
+}
+
+.bgc-connect-prompt__description label {
+	vertical-align: baseline;
 }
