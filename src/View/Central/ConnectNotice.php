@@ -223,7 +223,7 @@ class ConnectNotice {
 				/></a>
 			</div>
 			<div class="bgc-connect-prompt__description">
-				<h2><?php esc_html_e( 'Optimize your Workflow and Connect to Central' ); ?></h2>
+				<h2><?php esc_html_e( "Optimize your Workflow and Connect to $productName" ); ?></h2>
 				<p><?php esc_html_e( 'Connect your site to Central for remote access to this install and any other WordPress installs you connect. Central makes it easy to set up your site if you\'re a beginner and fast if you\'re an expert. Our one-of-a-kind tools and services help you bring everything together.' ); ?></p>
 				<p><?php esc_html_e( 'Connecting to Central is completely free and includes a free WordPress environment that you can use for testing or staging changes.'); ?></p>
 				<div class="bgc-connect-prompt__description__action">
