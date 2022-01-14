@@ -183,7 +183,7 @@ class ConnectNotice {
 	 *
 	 * @return string
 	 */
-	public function getConnectUrl() {
+	public static function getConnectUrl() {
 		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
 		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
 
