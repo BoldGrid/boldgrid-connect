@@ -87,7 +87,7 @@ class ConnectNotice {
 		wp_enqueue_style( 'bgc-connect-styles', plugins_url( './assets/style/admin.css', BOLDGRID_CONNECT_FILE ), array(), BOLDGRID_CONNECT_VERSION );
 
 		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
-		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
+		$provider = get_option( 'boldgrid_connect_provider', '' );
 
 		global $_wp_admin_css_colors;
 
