@@ -172,6 +172,19 @@ class Boldgrid_Connect {
 			$configs['central_url'] = ! empty( $optionConfigs['central_url'] ) ? $optionConfigs['central_url'] : $configs[ 'central_url' ];
 			return $configs;
 		} );
+
+		/**
+		 * Filters the bg_connect_configs option to merge option with static configs provided.
+		 *
+		 * @param false|mixed $value   Pre-option value. Default false.
+		 * @param string      $option  Option name.
+		 * @param mixed       $default Default option value.
+		 * @return false|mixed (Maybe) filtered pre-option value.
+		 */
+		add_filter( 'pre_option_bg_connect_configs', function( $pre_option, $option, $default ) use ( $optionConfigs ) {
+			$conf = \Boldgrid_Connect_Service::get( 'configs' );		 
+			return array_merge( $conf, $optionConfigs );
+		}, 10, 3 );
 	}
 
 	/**
