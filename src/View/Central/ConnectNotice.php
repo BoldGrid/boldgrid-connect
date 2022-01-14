@@ -212,7 +212,12 @@ class ConnectNotice {
 	public static function getNoticeBody() {
 		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
 		$provider = get_option( 'boldgrid_connect_provider', '' );
-		$productName = $configs['branding'][ $provider ]['productName'];
+		$productName = '';
+
+		if ( ! empty( $provider ) ) {
+			$productName = $configs['branding'][ $provider ]['productName'];
+		}
+
 		$connectUrl = self::getConnectUrl();
 
 		if ( ! empty( $provider ) ) : ?>
