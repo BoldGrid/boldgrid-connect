@@ -77,6 +77,18 @@ class Router {
 				// Find the requested user, or default.
 				$user = $this->selectUser( $userId );
 
+
+				if ( $user !== false && user_can( $userId, 'manage_options' ) ) {
+					$response = new \WP_REST_Response( [
+						'errors' => [
+							'name' => 'user_not_qualified',
+							'message' => 'Please try again with a WordPress administrator account.',
+						],
+					] );
+
+					$response->set_status( 400 );
+				}
+
 				// User found, create token and return to view.
 				if ( $user ) {
 
@@ -122,13 +134,10 @@ class Router {
 	 * @return WP_User User to login as.
 	 */
 	private function selectUser( $userId ) {
+		$user = false;
+		
 		if ( $userId ) {
 			$user = get_user_by( 'id', $userId );
-		}
-
-		if ( empty( $user ) ) {
-			$login = new \Boldgrid_Connect_Login();
-			$user = $login->get_user();
 		}
 
 		return $user;
