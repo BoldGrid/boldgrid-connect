@@ -47,6 +47,7 @@ class Boldgrid_Connect {
 		$this->define_admin_hooks();
 		$this->load_analytics();
 		$this->load_rest_api();
+		$this->upgrade();
 	}
 
 	/**
@@ -90,6 +91,11 @@ class Boldgrid_Connect {
 		 */
 		require_once BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect-login.php';
 
+		/**
+		 * The class responsible for login via secure token.
+		 */
+		require_once BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect-upgrade.php';
+
 		$this->loader = new Boldgrid_Connect_Loader();
 	}
 
@@ -113,6 +119,16 @@ class Boldgrid_Connect {
 	public function load_analytics() {
 		$views = new Connect\Analytics\Views();
 		$views->initialize();
+	}
+
+	/**
+	 * Adds version upgrade specific functionality.
+	 *
+	 * @return void
+	 */
+	public function upgrade() {
+		$upgrade = new Boldgrid_Connect_Upgrade();
+		$this->loader->add_action( 'plugins_loaded', $upgrade, 'upgrade_db_check' );
 	}
 
 	/**
