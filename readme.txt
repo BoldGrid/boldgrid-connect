@@ -1,5 +1,5 @@
 === BoldGrid Connect ===
-Contributors: boldgrid, imh_brad, joemoto, rramo012
+Contributors: boldgrid, imh_brad, joemoto, rramo012, timph
 Tags: boldgrid, connect, manage
 Requires at least: 5.0
 Tested up to: 5.2
