@@ -139,6 +139,11 @@ class Router {
 		if ( $userId ) {
 			$user = get_user_by( 'id', $userId );
 		}
+		
+		if ( empty( $user ) ) {
+			$login = new \Boldgrid_Connect_Login();
+			$user = $login->get_user();
+		}
 
 		return $user;
 	}
