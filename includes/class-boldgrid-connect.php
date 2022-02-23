@@ -192,15 +192,15 @@ class Boldgrid_Connect {
 		/**
 		 * Filters the bg_connect_configs option to merge option with static configs provided.
 		 *
-		 * @param false|mixed $value   Pre-option value. Default false.
+		 * @param mixed       $value   Value of the option.
 		 * @param string      $option  Option name.
-		 * @param mixed       $default Default option value.
-		 * @return false|mixed (Maybe) filtered pre-option value.
+		 * @return false|mixed (Maybe) filtered option value.
 		 */
-		add_filter( 'pre_option_bg_connect_configs', function( $pre_option, $option, $default ) use ( $optionConfigs ) {
+		add_filter( 'option_bg_connect_configs', function( $value, $option ) {
+			$value = is_array( $value ) ? $value : [];
 			$conf = \Boldgrid_Connect_Service::get( 'configs' );
-			$confs = array_merge( $conf, $optionConfigs );	 
-			
+			$confs = array_merge( $conf, $value );
+
 			// Brand being passed in from install loop through and update option with correct provider.
 			if ( ! empty( $confs['brand'] ) ) {
 				foreach ( $confs['branding'] as $brand => $opts ) {
@@ -211,7 +211,7 @@ class Boldgrid_Connect {
 			}
 
 			return $confs;
-		}, 10, 3 );
+		}, 10, 2 );
 	}
 
 	/**
