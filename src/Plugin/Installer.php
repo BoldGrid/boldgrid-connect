@@ -63,13 +63,7 @@ class Installer {
 	public function delete( $files ) {
 		include_once ABSPATH . 'wp-admin/includes/misc.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-		include_once BOLDGRID_CONNECT_PATH . 'includes/class-boldgrid-connect-upgrader.php';
-
-		foreach ( $files as $file ) {
-			$upgrader = new \Plugin_Upgrader( new \Boldgrid_Connect_Upgrader_Skin() );
-			$upgrader->init();
-			$upgrader->clear_destination( trailingslashit( WP_PLUGIN_DIR ) . plugin_dir_path( $file ) );
-		}
+		delete_plugins( $files );
 	}
 
 	/**
