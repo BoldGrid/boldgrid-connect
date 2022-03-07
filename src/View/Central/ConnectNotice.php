@@ -33,7 +33,7 @@ class ConnectNotice {
 		if ( $page === 'boldgrid-connect-central' ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		}
-		
+
 		add_action( 'admin_post_boldgrid_connect_provider', [ $this, 'admin_post' ] );
 		add_action( 'admin_print_footer_scripts-plugins.php', [ $this, 'printRestNonce' ] );
 		add_action( 'admin_menu', [ $this, 'add_submenu' ] );
@@ -51,7 +51,13 @@ class ConnectNotice {
 			) {
 				add_action( 'admin_notices', [ $this, 'render'] );
 				add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-				
+			}
+
+			if (
+				'options-general.php' === $pagenow
+				&& current_user_can( 'manage_options' )
+			) {
+				$this->handleConnectRedirect();
 			}
 		} );
 	}
@@ -147,6 +153,25 @@ class ConnectNotice {
 	}
 
 	/**
+	 * Handle connect redirect.
+	 *
+	 * @return void
+	 */
+	public function handleConnectRedirect() {
+		$isRedirect = isset( $_GET['token_redirect'] ) ? $_GET['token_redirect'] : false;
+		$page = isset( $_GET['page'] ) ? $_GET['page'] : false;
+
+		if ( 'boldgrid-connect-central' === $page && $isRedirect ) {
+			$authentication = new \BoldGrid\Connect\Authentication\Token();
+			$token = $authentication->create( wp_get_current_user(), '+5 minutes' );
+
+			$url = self::getConnectUrl( $token );
+			wp_redirect( $url );
+			exit;
+		}
+	}
+
+	/**
 	* Prints a TOS blurb used throughout the connection prompts.
 	*
 	* @since 2.0.0
@@ -183,16 +208,16 @@ class ConnectNotice {
 	 *
 	 * @return string
 	 */
-	public static function getConnectUrl() {
+	public static function getConnectUrl( $token ) {
 		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
 		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
 
 		$query = http_build_query( [
 			'url' => get_site_url(),
-			'nonce' => wp_create_nonce( 'wp_rest' ),
+			'token' => $token,
 			'site_title' => get_bloginfo( 'name' )
 		] );
-		
+
 		return trailingslashit( $configs['branding'][ $provider ]['central_url'] ) . 'connect/wordpress?' . $query;
 	}
 
@@ -218,7 +243,7 @@ class ConnectNotice {
 			$productName = $configs['branding'][ $provider ]['productName'];
 		}
 
-		$connectUrl = self::getConnectUrl();
+		$connectUrl = get_admin_url( null, 'options-general.php?page=boldgrid-connect-central&token_redirect=1' );
 
 		if ( ! empty( $provider ) ) : ?>
 			<div class="bgc-connect-prompt__logo">
@@ -236,7 +261,7 @@ class ConnectNotice {
 						esc_html_e( "Connect to $productName" ); ?></a> <?php echo self::termsOfService() ?>
 				</div>
 			</div>
-		<?php else : 
+		<?php else :
 			$redirect = urlencode( remove_query_arg( 'provider', $_SERVER['REQUEST_URI'] ) );
 			$redirect = urlencode( $_SERVER['REQUEST_URI'] );
 			?>
@@ -254,7 +279,7 @@ class ConnectNotice {
 						<label for="<?php echo $providerName; ?>"><?php echo $providerName; ?></label><br>
 					<?php } ?>
 					<?php submit_button( 'Get Started' ); ?>
-				</form> 
+				</form>
 			</div>
 		<?php endif;
 	}
@@ -264,7 +289,7 @@ class ConnectNotice {
 		if ( ! wp_verify_nonce( $_POST['boldgrid_connect_provider_nonce'], 'boldgrid_connect_provider' ) ) {
 			die( 'Invalid nonce.' . var_export( $_POST, true ) );
 		}
-			
+
 		// Check and set option for provider on submission.
 		if ( isset ( $_POST['provider'] ) ) {
 			update_option( 'boldgrid_connect_provider', $_POST['provider'] );

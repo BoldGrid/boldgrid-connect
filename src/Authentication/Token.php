@@ -29,7 +29,7 @@ class Token {
 	 * @param WP_User $user WP User to create an access token for.
 	 * @return array Access token.
 	 */
-	public function create( $user ) {
+	public function create( $user, $expires = '+2 hours' ) {
 		$accessTokens = get_user_option( 'bgc_access_tokens', $user->ID );
 		$accessTokens = is_array( $accessTokens ) ? $accessTokens : [];
 		$accessTokens = $this->cleanUpOldTokens( $accessTokens );
@@ -41,7 +41,7 @@ class Token {
 			'login_url' => wp_login_url(),
 			'wp_user_id' => $user->ID,
 			'access_token_hash' => wp_hash_password( $rawToken ),
-			'expires_at' => strtotime( '+2 hours' ),
+			'expires_at' => strtotime( $expires ),
 			'issued_at' => time(),
 		];
 
