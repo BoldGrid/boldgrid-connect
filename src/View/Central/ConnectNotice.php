@@ -165,7 +165,7 @@ class ConnectNotice {
 			$authentication = new \BoldGrid\Connect\Authentication\Token();
 			$token = $authentication->create( wp_get_current_user(), '+5 minutes' );
 
-			$url = self::getConnectUrl( $token );
+			$url = self::getConnectUrl( $token['access_token'] );
 			wp_redirect( $url );
 			exit;
 		}
