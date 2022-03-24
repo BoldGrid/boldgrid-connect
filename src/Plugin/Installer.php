@@ -28,7 +28,7 @@ class Installer {
 	 *
 	 * @return void
 	 */
-	public function list() {
+	public function getCollection() {
 		if ( ! function_exists( 'get_plugins' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}

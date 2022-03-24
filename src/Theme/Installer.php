@@ -63,7 +63,7 @@ class Installer {
 	 *
 	 * @return array List of themes.
 	 */
-	public function list() {
+	public function getCollection() {
 		$themes = [];
 
 		wp_cache_delete( 'themes', 'themes' );
