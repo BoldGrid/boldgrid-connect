@@ -95,10 +95,11 @@ class Central {
 	 * @return string           Value of header.
 	 */
 	public function getHeader( $headerKey ) {
-		$headers = getallheaders();
+		$headers = $this->resetServer->get_headers( $_SERVER );
 
 		$value = null;
 		foreach( $headers as $key => $header ) {
+			$key = str_replace( '_', '-', $key );
 			if ( strtolower( $key ) === strtolower( $headerKey ) ) {
 				$value = $header;
 				break;
