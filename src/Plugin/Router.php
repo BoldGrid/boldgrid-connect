@@ -72,7 +72,7 @@ class Router {
 					deactivate_plugins( $files );
 				}
 
-				$updatedPluginList = $this->pluginInstaller->list();
+				$updatedPluginList = $this->pluginInstaller->getCollection();
 				$response = new \WP_REST_Response( $updatedPluginList );
 
 				return $response;
@@ -113,7 +113,7 @@ class Router {
 
 				$this->pluginInstaller->delete( $files );
 
-				$updatedPluginList = $this->pluginInstaller->list();
+				$updatedPluginList = $this->pluginInstaller->getCollection();
 
 				$response = new \WP_REST_Response( $updatedPluginList );
 
@@ -145,7 +145,7 @@ class Router {
 		register_rest_route( 'bgc/v1', '/plugins/', array(
 			'methods' => 'GET',
 			'callback' => function () {
-				$response = $this->pluginInstaller->list();
+				$response = $this->pluginInstaller->getCollection();
 
 				$response = new \WP_REST_Response( $response );
 
@@ -176,7 +176,7 @@ class Router {
 					}
 				}
 
-				$response = $this->pluginInstaller->list();
+				$response = $this->pluginInstaller->getCollection();
 				$response = new \WP_REST_Response( $response );
 
 				// Add a custom status code

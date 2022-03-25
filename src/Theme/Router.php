@@ -110,7 +110,7 @@ class Router {
 					switch_theme( $activeStylesheet );
 				}
 
-				$response = $this->themeInstaller->list();
+				$response = $this->themeInstaller->getCollection();
 				$response = new \WP_REST_Response( $response );
 				$response->set_status( 201 );
 
@@ -165,7 +165,7 @@ class Router {
 
 				// @TODO --- Revert to default theme if active theme is deleted.
 
-				$updatedList = $this->themeInstaller->list();
+				$updatedList = $this->themeInstaller->getCollection();
 
 				$response = new \WP_REST_Response( $updatedList );
 
@@ -214,7 +214,7 @@ class Router {
 		register_rest_route( 'bgc/v1', '/themes/', array(
 			'methods' => 'GET',
 			'callback' => function () {
-				$response = $this->themeInstaller->list();
+				$response = $this->themeInstaller->getCollection();
 
 				$response = new \WP_REST_Response( $response );
 
