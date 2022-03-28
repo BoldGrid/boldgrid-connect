@@ -41,28 +41,44 @@ if ( ! defined( 'BOLDGRID_CONNECT_FILE' ) ) {
 	define( 'BOLDGRID_CONNECT_FILE', __FILE__ );
 }
 
-if ( ! function_exists ( 'run_boldgrid_connect' ) ) {
-	/**
-	 * The core plugin class that is used to define internationalization,
-	 * admin-specific hooks, and public-facing site hooks.
-	 */
-	require BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect.php';
-
-	/**
-	 * Begins execution of the plugin.
-	 *
-	 * Since everything within the plugin is registered via hooks,
-	 * then kicking off the plugin from this point in the file does
-	 * not affect the page life cycle.
-	 *
-	 * @since    1.0.0
-	 */
-	function run_boldgrid_connect() {
-		// Load the plugin.
-		$plugin = new Boldgrid_Connect();
-		$plugin->run();
-	}
-
-	run_boldgrid_connect();
+if ( ! class_exists( 'Boldgrid_Connect_Version_Check' ) ) {
+	require BOLDGRID_CONNECT_PATH . 'includes/class-boldgrid-connect-version-check.php';
 }
 
+// Initalize the version checking.  This checks that the user has at least WordPress v4.0 and PHP v5.6.
+// WordPress REST API was added in version 4.7.
+// BoldGrid Backup has a minimum PHP version of 5.4 supported.
+Boldgrid_Connect_Version_Check::init( plugin_basename( __FILE__ ), '4.7', '5.4' );
+
+// Initalize our core plugin functionality in the example-plugin:init hook.
+add_action( 'boldgrid-connect:init', 'boldgrid_connect_plugin_load' );
+
+/**
+ * Kicks off our core plugin code.
+ */
+function boldgrid_connect_plugin_load() {
+	if ( ! function_exists ( 'run_boldgrid_connect' ) ) {
+		/**
+		 * The core plugin class that is used to define internationalization,
+		 * admin-specific hooks, and public-facing site hooks.
+		 */
+		require BOLDGRID_CONNECT_PATH . '/includes/class-boldgrid-connect.php';
+	
+		/**
+		 * Begins execution of the plugin.
+		 *
+		 * Since everything within the plugin is registered via hooks,
+		 * then kicking off the plugin from this point in the file does
+		 * not affect the page life cycle.
+		 *
+		 * @since    1.0.0
+		 */
+		function run_boldgrid_connect() {
+			// Load the plugin.
+			$plugin = new Boldgrid_Connect();
+			$plugin->run();
+		}
+	
+		run_boldgrid_connect();
+	}
+}
