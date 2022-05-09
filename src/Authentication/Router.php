@@ -74,9 +74,8 @@ class Router {
 				// If the remote token is valid assign a local token.
 				$userId = $request->get_param( 'user_id' );
 
-				// Find the requested user, or default.
+				// Find the requested user.
 				$user = $this->selectUser( $userId );
-
 
 				if ( $user !== false && user_can( $userId, 'manage_options' ) ) {
 					$response = new \WP_REST_Response( [
@@ -117,7 +116,7 @@ class Router {
 					'description' => 'BoldGrid Authentication token',
 				],
 				'user_id' => [
-					'required' => false,
+					'required' => true,
 					'type' => 'string',
 					'description' => 'User ID to authenticate as',
 				],
@@ -135,15 +134,15 @@ class Router {
 	 */
 	private function selectUser( $userId ) {
 		$user = false;
-		
+
 		if ( $userId ) {
 			$user = get_user_by( 'id', $userId );
 		}
-		
-		if ( empty( $user ) ) {
-			$login = new \Boldgrid_Connect_Login();
-			$user = $login->get_user();
-		}
+
+		// if ( empty( $user ) ) {
+		// 	$login = new \Boldgrid_Connect_Login();
+		// 	$user = $login->get_user();
+		// }
 
 		return $user;
 	}
