@@ -317,7 +317,7 @@ class ConnectNotice {
 			<div class="bgc-connect-prompt__attn">
 				<span class="dashicons dashicons-info"></span>
 				<?php esc_html_e( 'Finish setup by connecting to Central to unlock multiple WordPress environments,
-					peformance optimization, site protection and more!' ); ?>
+					performance optimization, site protection and more!' ); ?>
 				<!--- <span class="notice-dismiss" title="Dismiss this notice"></span> -->
 			</div>
 			<div class="bgc-connect-prompt__body">
