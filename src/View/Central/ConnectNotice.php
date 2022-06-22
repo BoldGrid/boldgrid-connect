@@ -247,10 +247,9 @@ class ConnectNotice {
 
 		if ( ! empty( $provider ) ) : ?>
 			<div class="bgc-connect-prompt__logo">
-			<a href="<?php echo $configs['branding'][ $provider ]['providerUrl']; ?>"><img
-				src="<?php echo self::getBrandLogo(); ?>"
-				alt="<?php esc_attr_e( 'Connect your site', 'boldgrid-connect' ); ?>"
-				/></a>
+			<a href="<?php echo $configs['branding'][ $provider ]['providerUrl']; ?>">
+				<img src="<?php echo self::getBrandLogo(); ?>" alt="<?php esc_attr_e( 'Connect your site', 'boldgrid-connect' ); ?>" target="_blank" />
+			</a>
 			</div>
 			<div class="bgc-connect-prompt__description">
 				<h2><?php esc_html_e( "Optimize your Workflow and Connect to $productName" ); ?></h2>
