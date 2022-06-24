@@ -178,7 +178,12 @@ class Boldgrid_Connect {
 
 		// BoldGrid Library
 		add_filter( 'Boldgrid\Library\Configs\set', function( $configs ) use ( $optionConfigs ) {
-			$configs[ 'api' ] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'api' ];
+			// The timing of this filter doesn't always work as expected, so we should set the bglib_configs option as well.
+			$bg_lib_option        = get_option( 'bglib_configs', array() );
+			$bg_lib_option['api'] = ! empty( $option_configs['asset_server'] ) ? $option_configs['asset_server'] : $configs['api'];
+			update_option( 'bglib_configs', $bg_lib_option );
+
+			$configs[ 'api' ]     = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'api' ];
 			return $configs;
 		} );
 
