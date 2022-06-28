@@ -48,18 +48,22 @@ class Inspirations {
 			return;
 		}
 
-		$configs = \Boldgrid_Connect_Service::get( 'configs' );
+		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
 
 		add_meta_box(
 			'publish_website',
 			esc_html__( 'Publish Website', 'boldgrid-inspirations' ),
-			function () use ( $configs ) {
+			function () use ( $configs, $provider ) {
+				$productName = $configs['branding'][ $provider ]['productName'];
+				$centralUrl = $configs['branding'][ $provider ]['central_url'];
+
 				printf(
-					'<p>%1$s</p><a target="_blank" href="' . $configs['central_url'] . '/projects?environment_id=' . Option\Connect::get( 'environment_id' ) .
+					'<p>%1$s</p><a target="_blank" href="' . $centralUrl . '/projects?environment_id=' . Option\Connect::get( 'environment_id' ) .
 						'" class="button button-primary">%2$s</a>',
 					esc_html__( 'You\'ve deployed this site on a development environment. To make this website public, ' .
-					'you\'ll need to transfer to a production environment. Head back over to WordPress Central '.
-					'when you\'re done making changes to deploy your website.' ),
+					'you\'ll need to transfer to a production environment. Head back over to ' . $productName .
+					' when you\'re done making changes to deploy your website.' ),
 					esc_html__( 'Publish Site' )
 				);
 			},
