@@ -4,7 +4,7 @@ Tags: boldgrid, connect, manage
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 
 Connects users and sites with BoldGrid Central.
 
@@ -24,6 +24,12 @@ Using our single sign in feature, you can log into central and access any of you
 1. Activate the plugin through the Plugins menu in WordPress.
 
 == Changelog ==
+
+= 2.0.1 =
+
+Release Date: June 28th, 2022
+
+* Bug Fix: Fixes BoldGrid API server not being filtered correctly. 
 
 = 2.0.0 =
 
