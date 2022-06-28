@@ -38,7 +38,7 @@ return array(
 	'branding' => [
 		'InMotion Hosting' => [
 			'primaryColor' => '#c32227',
-			'productName'  => 'WordPress Central',
+			'productName'  => 'InMotion Central',
 			'tos'          => 'https://www.inmotionhosting.com/legal/',
 			'privacy'      => 'https://www.inmotionhosting.com/privacy/',
 			'logo'         => '/assets/img/imh.svg',
