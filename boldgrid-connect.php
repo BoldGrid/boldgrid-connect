@@ -15,7 +15,7 @@
  * Plugin Name:       BoldGrid Connect
  * Plugin URI:        https://www.boldgrid.com
  * Description:       Safe and easy management for all of your WordPress websites. SEO, Backups, 1-click login, site transfers, and more on one dashboard.
- * Version:           2.0.0
+ * Version:           2.0.1
  * Author:            BoldGrid
  * Author URI:        https://www.boldgrid.com
  * License:           GPL-2.0+
