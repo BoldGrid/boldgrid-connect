@@ -178,7 +178,12 @@ class Boldgrid_Connect {
 
 		// BoldGrid Library
 		add_filter( 'Boldgrid\Library\Configs\set', function( $configs ) use ( $optionConfigs ) {
-			$configs[ 'api' ] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'api' ];
+			// The timing of this filter doesn't always work as expected, so we should set the bglib_configs option as well.
+			$bg_lib_option        = get_option( 'bglib_configs', array() );
+			$bg_lib_option['api'] = ! empty( $option_configs['asset_server'] ) ? $option_configs['asset_server'] : $configs['api'];
+			update_option( 'bglib_configs', $bg_lib_option );
+
+			$configs[ 'api' ]     = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'api' ];
 			return $configs;
 		} );
 
@@ -199,17 +204,17 @@ class Boldgrid_Connect {
 		add_filter( 'option_bg_connect_configs', function( $value, $option ) {
 			$value = is_array( $value ) ? $value : [];
 			$conf = \Boldgrid_Connect_Service::get( 'configs' );
-			$confs = array_merge( $conf, $value );
+
+			$confs = ! empty( $conf ) ? array_merge( $conf, $value ) : $value;
 
 			// Brand being passed in from install loop through and update option with correct provider.
-			if ( ! empty( $confs['brand'] ) ) {
+			if ( ! empty( $confs['brand'] ) && ! empty( $confs['branding'] ) ) {
 				foreach ( $confs['branding'] as $brand => $opts ) {
 					if ( strpos( strtolower( $brand ), $confs['brand'] ) !== false ) {
 						update_site_option( 'boldgrid_connect_provider', $brand );
 					}
 				}
 			}
-
 			return $confs;
 		}, 10, 2 );
 	}
