@@ -166,7 +166,7 @@ class Boldgrid_Connect {
 		$optionConfigs = get_option( 'bg_connect_configs', [] );
 		$bg_lib_option = get_option( 'bglib_configs', array() );
 		
-		if ( ! empty( $optionCOnfigs['asset_server'] ) {
+		if ( ! empty( $optionConfigs['asset_server'] ) ) {
 			$bg_lib_option['api'] = $optionConfigs['asset_server'];
 			update_option( 'bglib_configs', $bg_lib_option );
 		}
