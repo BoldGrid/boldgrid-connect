@@ -164,6 +164,12 @@ class Boldgrid_Connect {
 	 */
 	private function overrideConfigs() {
 		$optionConfigs = get_option( 'bg_connect_configs', [] );
+		$bg_lib_option = get_option( 'bglib_configs', array() );
+		
+		if ( ! empty( $optionCOnfigs['asset_server'] ) {
+			$bg_lib_option['api'] = $optionConfigs['asset_server'];
+			update_option( 'bglib_configs', $bg_lib_option );
+		}
 
 		add_filter( 'BoldgridDemo/configs', function( $configs ) use ( $optionConfigs ) {
 			$configs['servers']['asset'] = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs['servers']['asset'];
@@ -179,10 +185,6 @@ class Boldgrid_Connect {
 		// BoldGrid Library
 		add_filter( 'Boldgrid\Library\Configs\set', function( $configs ) use ( $optionConfigs ) {
 			// The timing of this filter doesn't always work as expected, so we should set the bglib_configs option as well.
-			$bg_lib_option        = get_option( 'bglib_configs', array() );
-			$bg_lib_option['api'] = ! empty( $option_configs['asset_server'] ) ? $option_configs['asset_server'] : $configs['api'];
-			update_option( 'bglib_configs', $bg_lib_option );
-
 			$configs[ 'api' ]     = ! empty( $optionConfigs['asset_server'] ) ? $optionConfigs['asset_server'] : $configs[ 'api' ];
 			return $configs;
 		} );
