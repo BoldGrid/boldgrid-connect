@@ -214,6 +214,8 @@ class Boldgrid_Connect {
 				foreach ( $confs['branding'] as $brand => $opts ) {
 					if ( strpos( strtolower( $brand ), $confs['brand'] ) !== false ) {
 						update_site_option( 'boldgrid_connect_provider', $brand );
+						// This option controls hiding various menu items from the plugins/library.
+						update_site_option( 'boldgrid_connect_hide_menu', $brand === 'InMotion Hosting' );
 					}
 				}
 			}
