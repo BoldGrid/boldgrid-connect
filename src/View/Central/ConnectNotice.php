@@ -210,6 +210,7 @@ class ConnectNotice {
 	 */
 	public static function getConnectUrl( $token ) {
 		$configs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+		$provider = get_option( 'boldgrid_connect_provider', 'BoldGrid' );
 
 		$query = http_build_query( [
 			'url' => get_site_url(),
@@ -217,7 +218,7 @@ class ConnectNotice {
 			'site_title' => get_bloginfo( 'name' )
 		] );
 
-		return trailingslashit( $configs['central_url'] ) . 'connect/wordpress?' . $query;
+		return trailingslashit( $configs['branding'][ $provider ]['central_url'] ) . 'connect/wordpress?' . $query;
 	}
 
 	public static function getBrandLogo() {
