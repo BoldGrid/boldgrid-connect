@@ -221,6 +221,47 @@ class Boldgrid_Connect {
 			}
 			return $confs;
 		}, 10, 2 );
+
+		/**
+		 * Filters boldgrid_connect_provider option to update bg_connect_configs with changes to branding provider.
+		 *
+		 * @param mixed       $value   Value of the option.
+		 * @param string      $option  Option name.
+		 * @return false|mixed (Maybe) filtered option value.
+		 */
+		add_action( 'init', function() {
+			add_filter( 'option_boldgrid_connect_provider', function( $value, $option ) {
+				$value = is_string( $value ) ? $value : '';
+				$confs = get_option( 'bg_connect_configs', \Boldgrid_Connect_Service::get( 'configs' ) );
+
+				if ( $value === 'InMotion Hosting' ) {
+					if ( ! empty( $confs ) && ! empty( $confs['branding'] ) ) {
+						$centralUrl = trailingslashit( $confs['branding'][ $value ]['central_url'] ) . 'checkout/';
+
+						$confs['boldgrid_editor_premium_download_url'] = $centralUrl . 'post-and-page-builder';
+						$confs['boldgrid_editor_premium_url']          = $centralUrl . 'post-and-page-builder';
+						$confs['boldgrid_editor_new_key_url']          = $centralUrl . 'post-and-page-builder';
+						$confs['boldgrid_backup_premium_url']          = $centralUrl . 'boldgrid-backup';
+						$confs['boldgrid_library_new_key_url']         = $centralUrl . 'premium';
+						$confs['bgtfw_upgrade_url_pro_features']       = $centralUrl . 'crio';
+						$confs['bgtfw_premium_url']                    = $centralUrl . 'crio';
+
+						update_site_option( 'bg_connect_configs', $confs );
+					}
+				} else {
+					unset( $confs['boldgrid_backup_premium_url'] );
+					unset( $confs['boldgrid_editor_premium_url'] );
+					unset( $confs['boldgrid_editor_new_key_url'] );
+					unset( $confs['boldgrid_editor_premium_download_url'] );
+					unset( $confs['bgtfw_premium_url'] );
+					unset( $confs['boldgrid_library_new_key_url'] );
+					unset( $confs['bgtfw_upgrade_url_pro_features'] );
+				}
+
+
+				return $value;
+			}, 10, 2 );
+		} );
 	}
 
 	/**
