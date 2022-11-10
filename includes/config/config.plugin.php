@@ -42,7 +42,7 @@ return array(
 			'tos'          => 'https://www.inmotionhosting.com/legal/',
 			'privacy'      => 'https://www.inmotionhosting.com/privacy/',
 			'logo'         => '/assets/img/imh.svg',
-			'central_url'  => 'https://central.inmotionhosting.com',
+			'central_url'  => 'https://central.inmotionhosting.com/wordpress',
 			'providerUrl'  => 'https://www.inmotionhosting.com',
 		],
 		'BoldGrid' => [
