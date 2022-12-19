@@ -204,8 +204,19 @@ class Boldgrid_Connect {
 		 * @return false|mixed (Maybe) filtered option value.
 		 */
 		add_filter( 'option_bg_connect_configs', function( $value, $option ) {
+			/**
+			 * The BoldGrid Library applies this filter before the
+			 * 'configs' service gets registered above. In order for this
+			 * value to not be 'null', we need to run setup_configs() here
+			 * as well. Just checking for a null value doesn't work below,
+			 * because the Boldgrid_Connect_Service::get() method throws an
+			 * error if the requested service hasn't been registered
+			 */
+			$config = new Boldgrid_Connect_Config();
+			$config->setup_configs();
+
 			$value = is_array( $value ) ? $value : [];
-			$conf = \Boldgrid_Connect_Service::get( 'configs' );
+			$conf  = \Boldgrid_Connect_Service::get( 'configs' );
 
 			$confs = ! empty( $conf ) ? array_merge( $conf, $value ) : $value;
 
@@ -214,8 +225,6 @@ class Boldgrid_Connect {
 				foreach ( $confs['branding'] as $brand => $opts ) {
 					if ( strpos( strtolower( $brand ), $confs['brand'] ) !== false ) {
 						update_site_option( 'boldgrid_connect_provider', $brand );
-						// This option controls hiding various menu items from the plugins/library.
-						update_site_option( 'boldgrid_connect_hide_menu', $brand === 'InMotion Hosting' );
 					}
 				}
 			}
